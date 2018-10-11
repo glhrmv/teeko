@@ -32,6 +32,8 @@ _______________________________
 - 4 Red Pieces
 - Black first
 - Put all pieces until all done
+- Move a piece per round 
+- Win condition: Form 4 pieces in line, diagonal or making a square.
 
 ## Values
 
