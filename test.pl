@@ -35,7 +35,7 @@ display_game([], _Player):-
 display_game([L | Ls], _Player) :-
   write('---------------------'),
   write('\n'),
-  //vwrite(x),
+  %vwrite(x),
   print_line(L),
   display_game(Ls, _Player).
 
