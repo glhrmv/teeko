@@ -1,6 +1,6 @@
 # teeko
 
-# Generating report `.pdf`
+### Generating report `.pdf`
 
 Install [LaTeX](https://www.latex-project.org/get/) and [Pandoc](https://pandoc.org/) and then run:
 ```
