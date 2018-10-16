@@ -1,5 +1,7 @@
 /**/
 
+x is 1.
+
 board([
   [e, e, b, e, e],
   [e, e, b, w, b],
@@ -9,22 +11,32 @@ board([
 ]).
 
 print_char(e) :- 
-  write('_').
+  write(' ').
 print_char(b) :- 
   write('B').
 print_char(w) :- 
   write('W').
 
-print_line([]).
+print_line([]):-
+	write('|'),
+	write('\n').
+	
 print_line([Char | Chars]):-
+  write('| '),
   print_char(Char),
+  write(' '),
   print_line(Chars).
 
 % display_game(+Board, +Player)
-display_game([], _Player).
+display_game([], _Player):-
+	write('---------------------'),
+	write('\n').
+	
 display_game([L | Ls], _Player) :-
-  print_line(L),
+  write('---------------------'),
   write('\n'),
+  //vwrite(x),
+  print_line(L),
   display_game(Ls, _Player).
 
 /*
