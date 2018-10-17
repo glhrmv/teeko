@@ -1,30 +1,24 @@
 /**/
  :-use_module(library(lists)).
 
-board([
-[e, e, e, e, e],
-[e, e, e, e, e],
-[e, e, e, e, e],
-[e, e, e, e, e],
-[e, e, e, e, e]
-]).
-
 count_elements([],0).
 count_elements([_|Tail], N) :-    
   count_elements(Tail, X),
   N is X+1.
 
-print_letter(4) :-
+% Board grid characters
+print_char(4) :-
   write(' A ').
-print_letter(3) :-
+print_char(3) :-
   write(' B ').
-print_letter(2) :-
+print_char(2) :-
   write(' C ').
-print_letter(1) :-
+print_char(1) :-
   write(' D ').
-print_letter(0) :-
+print_char(0) :-
   write(' E ').
 
+% Board space characters
 print_char(e) :- 
   write(' ').
 print_char(b) :- 
@@ -55,7 +49,7 @@ display_game([L | Ls], _Player) :-
   ; write('   ---------------------')
   ), 
   write('\n'),    
-  print_letter(Y),
+  print_char(Y),
   print_line(L),
   display_game(Ls, _Player).
 

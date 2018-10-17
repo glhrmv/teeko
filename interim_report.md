@@ -65,7 +65,7 @@ The game board will be defined internally as a list of lists. Each element of
 the outer list represents a line in the board. Here are some examples of board
 states:
 
-~~~
+~~~prolog
 /* Starting board: All cells are empty, defined by the atom e */
 board([
   [e, e, e, e, e],
@@ -76,7 +76,7 @@ board([
 ]).
 ~~~
 
-~~~
+~~~prolog
 /* Intermediate board: Some markers on the board, neither player winning */
 /* The atom b represents the Black markers */
 /* The atom w epresents the White markers */
@@ -89,7 +89,7 @@ board([
 ]).
 ~~~
 
-~~~
+~~~prolog
 /* Finishing board: Black wins in this scenario */
 board([
   [e, e, e, e, e],
@@ -133,9 +133,60 @@ or it will display which player's turn it is to move.
 
 This predicate has been implemented in the following way:
 
-~~~
+~~~prolog
+ :-use_module(library(lists)).
 
+count_elements([],0).
+count_elements([_|Tail], N) :-
+  count_elements(Tail, X),
+  N is X+1.
 
+% Board grid line indicators
+print_char(4) :-
+  write(' A ').
+print_char(3) :-
+  write(' B ').
+print_char(2) :-
+  write(' C ').
+print_char(1) :-
+  write(' D ').
+print_char(0) :-
+  write(' E ').
+
+% Board space indicators
+print_char(e) :-
+  write(' ').
+print_char(b) :-
+  write('B').
+print_char(w) :-
+  write('W').
+
+print_line([]):-
+  write('|'),
+  write('\n').
+
+print_line([Char | Chars]):-
+  write('| '),
+  print_char(Char),
+  write(' '),
+  print_line(Chars).
+
+% display_game(+Board, +Player)
+display_game([], _Player):-
+  write('   ---------------------'),
+  write('\n').
+
+display_game([L | Ls], _Player) :-
+  count_elements(Ls, Y),
+  (Y =:= 4 ->
+    write('\n     1   2   3   4   5  \n'),
+    write('   ---------------------')
+  ; write('   ---------------------')
+  ),
+  write('\n'),
+  print_char(Y),
+  print_line(L),
+  display_game(Ls, _Player).
 ~~~
 
 \newpage
