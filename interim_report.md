@@ -1,10 +1,14 @@
 ---
-title: "Programação Lógica - Trabalho Prático 1 \\ Relatório intercalar"
+title: Logic Programming - Project 1
+subtitle: Interim report
 date: "2018/2019"
 author:
 - Guilherme Vale (201709049)
 - Pedro Azevedo (201306026)
+institute: FEUP
+
 numbersections: true
+documentclass: scrartcl
 bibliography: references.bib
 ---
 
@@ -23,10 +27,12 @@ Teeko is a 2-player board game played on a board of 5x5 possible positions.
 Game pieces in Teeko are typically called 'markers', and will henceforth be referred to as such.
 Both players have 4 markers each, with a particular colour of marker for each player.
 
-In the original Teeko game, players had 2 colours of markers: black, and red.
+In the original Teeko game, players had two (2) colours of markers: black, and red.
 For the sake of easy discernment of the board state in this project, the markers are
-available in black and white, with the player controlling the black markers known as Black,
-and the other as White.
+instead available in black and white,
+with the player controlling the black markers known as Black, and the other as White.
+
+![A Teeko game ready to be played.](teeko_irl.jpg){width=500px}
 
 ## Gameplay and rules
 
@@ -44,8 +50,10 @@ A game piece can only be moved to one empty adjacent space, in any direction (ho
 
 ## Win condition
 
-The game is over and a player is victorious only when their markers are arranged in a straight line - either
-vertical, horizontal, or diagonal - or when they form a square of four (4) adjacent markers.
+The game is over and a player is victorious only when their markers are arranged in a straight line in any
+direction (horizontal, vertical, or diagonal) or when they form a square of four (4) adjacent markers.
+
+![Black wins in this scenario.](teeko_board_example1.jpg){width=300px height=300px}
 
 \pagebreak
 
@@ -82,7 +90,7 @@ board([
 ~~~
 
 ~~~
-/* Finishing board: Black wins in this scenario. */
+/* Finishing board: Black wins in this scenario */
 board([
   [e, e, e, e, e],
   [e, w, b, e, e],
@@ -100,20 +108,19 @@ The game board will be defined as such, where:
 
 - B represents a black marker
 - W represents a white marker
-- _ represents an empty space
 
 ~~~
     1   2   3   4   5
   ---------------------
-a | _ | _ | W | _ | _ |
+a |   |   | W |   |   |
   ---------------------
-b | _ | B | W | W | _ |
+b |   | B | W | W |   |
   ---------------------
-c | _ | W | B | _ | _ |
+c |   | W | B |   |   |
   ---------------------
-d | _ | _ | B | B | _ |
+d |   |   | B | B |   |
   ---------------------
-e | _ | _ | _ | _ | _ |
+e |   |   |   |   |   |
   ---------------------
 ~~~
 
@@ -124,10 +131,14 @@ some information regarding what can be done from this state: either a winning co
 found and victory is granted to the respective player and the game is over,
 or it will display which player's turn it is to move.
 
+This predicate has been implemented in the following way:
+
 ~~~
+
 
 ~~~
 
 \newpage
+\setlength\parindent{0pt}
 
 # References

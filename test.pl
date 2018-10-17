@@ -8,11 +8,11 @@ board([
   [e, e, e, e, e]
 ]).
 
-print_char(e) :- 
+print_char(e) :-
   write('_').
-print_char(b) :- 
+print_char(b) :-
   write('B').
-print_char(w) :- 
+print_char(w) :-
   write('W').
 
 print_line([]).
