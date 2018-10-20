@@ -62,8 +62,9 @@ direction (horizontal, vertical, or diagonal) or when they form a square of four
 ### Definition
 
 The game board will be defined internally as a list of lists. Each element of
-the outer list represents a line in the board. Here are some examples of board
-states:
+the outer list represents a row in the board, with each element of a row
+corresponding to a cell, i.e., a position on the board. 
+Here are some examples of board states:
 
 ~~~prolog
 /* Starting board: All cells are empty, defined by the atom e */
@@ -134,7 +135,7 @@ or it will display which player's turn it is to move.
 This predicate has been implemented in the following way:
 
 ~~~prolog
- :-use_module(library(lists)).
+:-use_module(library(lists)).
 
 count_elements([],0).
 count_elements([_|Tail], N) :-
@@ -153,7 +154,7 @@ print_char(1) :-
 print_char(0) :-
   write(' E ').
 
-% Board space indicators
+% Board position indicators
 print_char(e) :-
   write(' ').
 print_char(b) :-
