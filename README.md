@@ -1,5 +1,7 @@
 # teeko
 
+> University project made for FEUP, MIEIC (PLOG).
+
 A [Prolog][1] implementation of the game [Teeko][2].
 
 ### Generating report `.pdf`
