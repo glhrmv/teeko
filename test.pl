@@ -8,15 +8,15 @@ count_elements([_|Tail], N) :-
 
 % Board grid characters
 print_char(4) :-
-  write(' A ').
+  write(' a ').
 print_char(3) :-
-  write(' B ').
+  write(' b ').
 print_char(2) :-
-  write(' C ').
+  write(' c ').
 print_char(1) :-
-  write(' D ').
+  write(' d ').
 print_char(0) :-
-  write(' E ').
+  write(' e ').
 
 % Board space characters
 print_char(e) :- 
