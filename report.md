@@ -1,6 +1,6 @@
 ---
 title: Logic Programming - Project 1
-subtitle: Interim report
+subtitle: Report
 date: "2018/2019"
 author:
 - Guilherme Vale (201709049)
@@ -30,9 +30,9 @@ Both players have 4 markers each, with a particular colour of marker for each pl
 In the original Teeko game, players had two (2) colours of markers: black, and red.
 For the sake of easy discernment of the board state in this project, the markers are
 instead available in black and white,
-with the player controlling the black markers known as Black, and the other as White.
+with the player controlling the black markers known as Black, and the other as Red.
 
-![A Teeko game ready to be played.](teeko_irl.jpg){width=500px}
+![A Teeko game ready to be played.](img/teeko_irl.jpg){width=500px}
 
 ## Gameplay and rules
 
@@ -53,7 +53,7 @@ A game piece can only be moved to one empty adjacent space, in any direction (ho
 The game is over and a player is victorious only when their markers are arranged in a straight line in any
 direction (horizontal, vertical, or diagonal) or when they form a square of four (4) adjacent markers.
 
-![Black wins in this scenario.](teeko_board_example1.jpg){width=300px height=300px}
+![Black wins in this scenario.](img/teeko_board_example1.jpg){width=300px height=300px}
 
 \pagebreak
 
