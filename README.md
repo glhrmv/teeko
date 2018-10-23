@@ -1,8 +1,15 @@
 # teeko
 
-### Generating interim report `.pdf`
+A [Prolog][1] implementation of the game [Teeko][2].
 
-Install [LaTeX](https://www.latex-project.org/get/) and [Pandoc](https://pandoc.org/) and then run:
+### Generating report `.pdf`
+
+Install [LaTeX][3] and [Pandoc][4] and then run:
 ```
-pandoc --filter pandoc-citeproc -s interim_report.md -o PLOG_TP1_RI_Teeko3.md
+pandoc --filter pandoc-citeproc -s report.md -o <filename>.pdf
 ```
+
+[1]: https://en.wikipedia.org/wiki/Prolog
+[2]: https://en.wikipedia.org/wiki/Teeko
+[3]: https://www.latex-project.org/get/
+[4]: https://pandoc.org/
