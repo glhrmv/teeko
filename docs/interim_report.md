@@ -1,6 +1,6 @@
 ---
 title: Logic Programming - Project 1
-subtitle: Final report
+subtitle: Interim report
 date: "2018/2019"
 author:
 - Guilherme Vale (201709049)
@@ -13,8 +13,6 @@ bibliography: references.bib
 ---
 
 \newpage
-
-# Introduction
 
 # Teeko
 
@@ -59,13 +57,13 @@ direction (horizontal, vertical, or diagonal) or when they form a square of four
 
 \pagebreak
 
-# Game logic
+## Game board
 
-## Board definition
+### Definition
 
 The game board will be defined internally as a list of lists. Each element of
 the outer list represents a row in the board, with each element of a row
-corresponding to a cell, i.e., a position on the board.
+corresponding to a cell, i.e., a position on the board. 
 Here are some examples of board states:
 
 ~~~prolog
@@ -105,7 +103,7 @@ board([
 
 \newpage
 
-## Board visualization
+### Visualization
 
 The game board will be defined as such, where:
 
@@ -191,18 +189,6 @@ display_game([L | Ls], _Player) :-
   print_line(L),
   display_game(Ls, _Player).
 ~~~
-
-## Valid moves
-
-## Moving markers
-
-## End of game detection
-
-## Board state evaluation
-
-## Computer movement
-
-# Conclusion 
 
 \newpage
 \setlength\parindent{0pt}
