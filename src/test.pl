@@ -1,6 +1,14 @@
 /**/
  :-use_module(library(lists)).
 
+board([
+ [e, e, b, e, e],
+ [e, e, b, w, b],
+ [e, e, b, w, e],
+ [e, w, w, e, e],
+ [e, e, e, e, e]
+ ]).
+ 
 count_elements([],0).
 count_elements([_|Tail], N) :-    
   count_elements(Tail, X),
@@ -53,6 +61,9 @@ display_game([L | Ls], _Player) :-
   print_line(L),
   display_game(Ls, _Player).
 
+% this will get the board 
+get_board(X) :-
+	board(X).
 /*
  display_game([
  [e, e, b, e, e],
