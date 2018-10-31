@@ -202,7 +202,7 @@ display_game([L | Ls], _Player) :-
 
 ## Computer movement
 
-# Conclusion 
+# Conclusion
 
 \newpage
 \setlength\parindent{0pt}
