@@ -2,12 +2,13 @@
  :-use_module(library(lists)).
 
 board([
- [e, e, b, e, e],
- [e, e, b, w, b],
- [e, e, b, w, e],
- [e, w, w, e, e],
- [e, e, e, e, e]
- ]).
+	[e, e, b, e, e],
+	[e, e, b, w, b],
+	[e, e, b, w, e],
+	[e, w, w, e, e],
+	[e, e, e, e, e]
+	]).
+
  
 count_elements([],0).
 count_elements([_|Tail], N) :-    
@@ -64,6 +65,26 @@ display_game([L | Ls], _Player) :-
 % this will get the board 
 get_board(X) :-
 	board(X).
+
+
+move_piece(X, Y, Letter,R) :-
+	board(B) ,
+	find_line(B, X, Y, Letter, R).
+
+find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-
+  find_column(L,Y,Z,R).
+
+find_line( [L|Ls] , X , Y , Z , [L|Rs] ) :-
+	X > 0 ,
+	X1 is X-1 ,
+	find_line( Ls , X1 , Y , Z , Rs ).                                       
+
+find_column( [_|Cs] , 0 , Z , [Z|Cs] ) .  
+find_column( [C|Cs] , Y , Z , [C|Rs] ) :- 
+	Y > 0 ,
+	Y1 is Y-1 ,
+	find_column( Cs , Y1 , Z , Rs ).                                   
+	
 /*
  display_game([
  [e, e, b, e, e],
