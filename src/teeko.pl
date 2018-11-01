@@ -1,13 +1,13 @@
-/**/
-:-use_module(library(lists)).
+/* Teeko */
 
-board([
-[e, e, b, e, e],
-[e, e, b, w, b],
-[e, e, b, w, e],
-[e, w, w, e, e],
-[e, e, e, e, e]
-]).
+/* Standard library */
+:- use_module(library(system)).
+:- use_module(library(random)).
+:- use_module(library(lists)).
+
+/* External files */
+:- ensure_loaded('board_state.pl').
+:- ensure_loaded('utils.pl').
 
 count_elements([],0).
 count_elements([_|Tail], N) :-
@@ -81,13 +81,3 @@ find_column( [C|Cs] , Y , Z , [C|Rs] ) :-
   Y > 0 ,
   Y1 is Y-1 ,
   find_column( Cs , Y1 , Z , Rs ).
-
-/*
-display_game([
-[e, e, b, e, e],
-[e, e, b, w, b],
-[e, e, b, w, e],
-[e, w, w, e, e],
-[e, e, e, e, e]
-], aaa).
-*/
