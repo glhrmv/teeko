@@ -10,6 +10,7 @@
 :- ensure_loaded('utils.pl').
 :- ensure_loaded('graphics.pl').
 :- ensure_loaded('input.pl').
+:- ensure_loaded('pvp.pl').
 
 
 teeko :-
