@@ -53,7 +53,7 @@ display_game([L | Ls], _Player) :-
     write('\n     1   2   3   4   5  \n'),
     write('   ---------------------')
   ; write('   ---------------------')
-  ),
+  ), 
   write('\n'),
   print_char(Y),
   print_line(L),
