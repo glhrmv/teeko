@@ -39,7 +39,7 @@ play_mode(1) :-
 	nl, nl,
 	write('Player1 -> '), black_circle, write('   '),
 	write('Player2 -> '), white_circle, nl,
-	display_game(B, a), nl,
+	print_board(5, B), nl,
 	play_pvp(1, B).
 
 
@@ -69,15 +69,6 @@ print_char(b) :-
 print_char(w) :-
 	write('W').
 
-print_line([]):-
-	write('|'),
-	write('\n').
-	
-print_line([Char | Chars]):-
-	write('| '),
-	print_char(Char),
-	write(' '),
-	print_line(Chars).
  
 % display_game(+Board, +Player)
 display_game([], _Player):-

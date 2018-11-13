@@ -113,18 +113,18 @@ print_pieces(Currline, _, Line) :-
 
 print_piece([]).
 
-print_piece([0|Line]) :-
+print_piece([e|Line]) :-
 	vert,
 	write('  '),
 	print_piece(Line).
 
-print_piece([1|Line]) :-
+print_piece([b|Line]) :-
 	vert,
 	black_circle,
 	write(' '),
 	print_piece(Line).
 
-print_piece([2|Line]) :-
+print_piece([w|Line]) :-
 	vert,
 	white_circle,
 	write(' '),
