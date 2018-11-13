@@ -1,13 +1,11 @@
 /**/
 :-use_module(library(lists)).
 
-board([
-[e, e, b, e, e],
-[e, e, b, w, b],
-[e, e, b, w, e],
-[e, w, w, e, e],
-[e, e, e, e, e]
-]).
+board([[e,e,b,e,e],
+[e,e,b,w,b],
+[e,e,b,w,e],
+[e,w,w,e,e],
+[e,e,e,e,e]]).
 
 count_elements([],0).
 count_elements([_|Tail], N) :-
