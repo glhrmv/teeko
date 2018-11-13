@@ -11,7 +11,7 @@
 :- ensure_loaded('graphics.pl').
 :- ensure_loaded('input.pl').
 :- ensure_loaded('pvp.pl').
-
+:- ensure_loaded('rules.pl').
 
 teeko :-
 	nl,
@@ -47,19 +47,4 @@ play_mode(1) :-
 play_mode(4) :-
   halt.
 
-put_piece(B, X, Y, Letter, R) :-
-	find_line(B, X, Y, Letter, R).
 
-find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-
-	find_column(L,Y,Z,R).
-
-find_line( [L|Ls] , X , Y , Z , [L|Rs] ) :-
-	X > 0 ,
-	X1 is X-1 ,
-	find_line( Ls , X1 , Y , Z , Rs ).
-
-find_column( [_|Cs] , 0 , Z , [Z|Cs] ).
-find_column( [C|Cs] , Y , Z , [C|Rs] ) :-
-	Y > 0 ,
-	Y1 is Y-1 ,
-	find_column( Cs , Y1 , Z , Rs ).
