@@ -47,54 +47,7 @@ play_mode(1) :-
 play_mode(4) :-
   halt.
 
-count_elements([],0).
-count_elements([_|Tail], N) :-
-	count_elements(Tail, X),
-	N is X+1.
-
-% Board grid characters
-print_char(4) :-
-	write(' a ').
-print_char(3) :-
-	write(' b ').
-print_char(2) :-
-	write(' c ').
-print_char(1) :-
-	write(' d ').
-print_char(0) :-
-	write(' e ').
-
-% Board space characters
-print_char(e) :-
-	write(' ').
-print_char(b) :-
-	write('B').
-print_char(w) :-
-	write('W').
-
- 
-% display_game(+Board, +Player)
-display_game([], _Player):-
-	write('   ---------------------'),
-	write('\n').
-
-display_game([L | Ls], _Player) :-
-	count_elements(Ls, Y),
-	(Y =:= 4 ->
-	write('\n     1   2   3   4   5  \n'),
-	write('   ---------------------')
-	; write('   ---------------------')
-	),
-	write('\n'),
-	print_char(Y),
-	print_line(L),
-	display_game(Ls, _Player).
-
-get_board(X) :-
-	board(X).
-
-move_piece(X, Y, Letter,R) :-
-	board(B) ,
+put_piece(B, X, Y, Letter) :-
 	find_line(B, X, Y, Letter, R).
 
 find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-
