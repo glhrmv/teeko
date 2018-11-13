@@ -7,6 +7,24 @@ board([[e,e,b,e,e],
 [e,w,w,e,e],
 [e,e,e,e,e]]).
 
+board1([[e,e,b,e,e],
+[e,e,b,w,b],
+[e,e,b,w,e],
+[e,w,w,e,e],
+[e,e,e,e,e]]).
+
+board2([[e,b,b,b,b],
+[e,e,b,w,b],
+[e,e,b,w,e],
+[e,w,w,e,e],
+[e,e,e,e,e]]).
+
+board3([[e,b,e,b,b],
+[e,w,w,w,b],
+[e,w,w,w,e],
+[e,w,w,e,e],
+[e,e,w,e,e]]).
+
 count_elements([],0).
 count_elements([_|Tail], N) :-
   count_elements(Tail, X),
