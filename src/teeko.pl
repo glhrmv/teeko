@@ -47,7 +47,7 @@ play_mode(1) :-
 play_mode(4) :-
   halt.
 
-put_piece(B, X, Y, Letter) :-
+put_piece(B, X, Y, Letter, R) :-
 	find_line(B, X, Y, Letter, R).
 
 find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-
