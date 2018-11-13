@@ -39,7 +39,7 @@ play_mode(1) :-
 	nl, nl,
 	write('Player1 -> '), black_circle, write('   '),
 	write('Player2 -> '), white_circle, nl,
-	print_board(10, B), nl,
+	display_game(B, a), nl,
 	play_pvp(1, B).
 
 
