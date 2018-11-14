@@ -26,7 +26,7 @@ board3([[e,b,e,b,b],
 [e,e,w,e,e]]).
 
 board4([
-[e,e,e,e,e],
+[b,b,b,e,e],
 [e,e,e,e,e],
 [e,w,e,e,e],
 [e,w,w,e,e],
