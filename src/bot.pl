@@ -1,4 +1,5 @@
 /* Bot logic */
 
-choose_move().
+choose_move() :-
+
 

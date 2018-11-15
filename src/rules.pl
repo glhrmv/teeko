@@ -1,5 +1,13 @@
 /* Rules */
 
+check_column([Player, Player, Player, Player | _], Player).
+check_column([_ | Under], Player) :-
+  check_column(Under, Player).
+
+check_rows([Player | _], [Player | _], [Player | _], [Player | _], Player).
+check_rows([_ | Under1], [_ | Under2], [_ | Under3], [_ | Under4], Player) :-
+  check_rows(Under1, Under2, Under3, Under4, Player).
+
 /* A marker cannot be placed on a position wih a marker already on it */
 check_free_space([L|_], Columm, 0, Value) :-
   check_free_space_c(L, Columm, Value).
@@ -101,12 +109,4 @@ win(Board, Player) :-
   Col1 = [_| Col3],
   Col2 = [_| Col4],
   check_rows(Col1, Col2, Col3, Col4, Player).
-
-check_column([Player, Player, Player, Player | _], Player).
-check_column([_ | Under], Player) :-
-  check_column(Under, Player).
-
-check_rows([Player | _], [Player | _], [Player | _], [Player | _], Player).
-check_rows([_ | Under1], [_ | Under2], [_ | Under3], [_ | Under4], Player) :-
-  check_rows(Under1, Under2, Under3, Under4, Player).
 
