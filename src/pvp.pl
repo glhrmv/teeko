@@ -14,8 +14,6 @@ play_pvp(Player, Board) :-
 	count_markers(Board, Value, Count),
 	Count < 4,
 	read_position_to(Player, Board, C, L),
-	write(C),
-	write(L),
 	player(Player, Letter),
 	put_marker(Board, L, C, Letter, NewBoard),
 	print_board(5, NewBoard),
@@ -23,8 +21,15 @@ play_pvp(Player, Board) :-
 	play_pvp(Other, NewBoard).
 
 play_pvp(Player, Board) :-
-	player(Player, Value),
-	count_markers(Board, Value, Count),
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
 	Count = 4,
-	write('Next game phase').
+	read_position_from(Player, Board, C, L),	
+	read_position_to(Player, Board, C1, L1),
+	check_adjacent(C, L, C1, L1),
+	put_marker(Board, L, C, e, NewBoard),
+	put_marker(NewBoard, L1, C1, Letter, MoreNewBoard),
+	print_board(5, MoreNewBoard),
+	Other is ((Player mod 2) + 1),
+	play_pvp(Other, MoreNewBoard).
 
