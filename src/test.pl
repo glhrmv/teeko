@@ -35,8 +35,8 @@ board4([
 count_elements([],0).
 count_elements([_|Tail], N) :-
   count_elements(Tail, X),
-  N is X+1.  
- 
+  N is X+1.
+
 % Board grid characters
 print_char(4) :-
   write(' a ').
