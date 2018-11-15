@@ -1,7 +1,6 @@
-/* RULES */
+/* Rules */
 
-/* Same piece cannot be placed at already existent piece */
-
+/* A marker cannot be placed on a position wih a marker already on it */
 check_free_space([L|_], Columm, 0, Value) :-
   check_free_space_c(L, Columm, Value).
 
@@ -9,7 +8,6 @@ check_free_space([_|Ls], Columm, Line, Value) :-
   Line > 0,
   L1 is Line - 1,
   check_free_space(Ls, Columm, L1, Value).
-
 
 check_free_space_c([C | _], 0, Value) :-
   Value = C.
@@ -21,17 +19,17 @@ check_free_space_c([_|Cs], Columm, Value) :-
 
 /* Check Win Line */
 
-% Vertical win condition
+/* Vertical win condition */
 win(Board, Player) :-
   append(_, [Column | _], Board),
   check_column(Column, Player).
 
-% Horizontal win condition
+/* Horizontal win condition */
 win(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   check_rows(Col1, Col2, Col3, Col4, Player).
 
-% Diagonal win condition type 1 (decreasing rows)
+/* Diagonal win condition type 1 (decreasing rows) */
 win(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   Col2 = [_ | NewCol2],
@@ -39,7 +37,7 @@ win(Board, Player) :-
   Col4 = [_, _, _ | NewCol4],
   check_rows(Col1, NewCol2, NewCol3, NewCol4, Player).
 
-% Diagonal win condition type 2 (increasing rows)
+/* Diagonal win condition type 2 (increasing rows) */
 win(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   Col1 = [_, _, _ | NewCol1],
@@ -47,7 +45,7 @@ win(Board, Player) :-
   Col3 = [_ | NewCol3],
   check_rows(NewCol1, NewCol2, NewCol3, Col4, Player).
 
-% Square win condition
+/* Square win condition */
 win(Board, Player) :-
   append(_, [Col1, Col2| _], Board),
   Col1 = [_| Col3],

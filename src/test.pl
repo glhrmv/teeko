@@ -87,7 +87,7 @@ display_game([L | Ls], _Player) :-
 get_board(X) :-
   board(X).
 
-move_piece(X, Y, Letter,R) :-
+move_marker(X, Y, Letter,R) :-
   board(B) ,
   find_line(B, X, Y, Letter, R).
 

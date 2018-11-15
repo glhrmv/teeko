@@ -3,19 +3,19 @@
 player(1, Value) :- Value = b.
 player(2, Value) :- Value = w.
 
-/* Count number of piece Piece in a board */
-count_pieces([], _Piece, 0).
-count_pieces([Line | Lines], Piece, Count) :-
+/* Count number of marker Piece in a board */
+count_markers([], _Piece, 0).
+count_markers([Line | Lines], Piece, Count) :-
   count_elem(Line, Piece, NCount),
-  count_pieces(Lines, Piece, NNCount),
+  count_markers(Lines, Piece, NNCount),
   Count is (NCount + NNCount).
 
 count_elem([], _X, 0).
 count_elem([X|T],X,Y) :- count_elem(T,X,Z), Y is 1+Z.
 count_elem([X1|T],X,Z) :- X1\=X,count_elem(T,X,Z).
 
-/* To put a piece in the board */
-put_piece(B, X, Y, Letter, R) :-
+/* To put a marker in the board */
+put_marker(B, X, Y, Letter, R) :-
   find_line(B, X, Y, Letter, R).
 
 find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-

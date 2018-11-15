@@ -24,7 +24,7 @@ teeko :-
 
 main_menu :-
   double_vert, space(37), double_vert, nl,
-  double_vert, space(13), write('Game Modes'), space(14), double_vert, nl,
+  double_vert, space(13), write('Select an option'), space(14), double_vert, nl,
   double_vert, space(37), double_vert, nl,
   double_vert, space(8), write('1. Player vs. Player'), space(9), double_vert, nl,
   double_vert, space(8), write('2. Player vs. CPU'), space(12), double_vert, nl,
