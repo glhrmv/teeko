@@ -1,10 +1,10 @@
 /* Definition of the initial board state */
 
-board(B) :- B = [
+board([
   [e, e, e, e, e],
   [e, e, e, e, e],
   [e, e, e, e, e],
   [e, e, e, e, e],
   [e, e, e, e, e]
-].
+]).
 
