@@ -18,53 +18,54 @@ check_free_space_c([_|Cs], Columm, Value) :-
   check_free_space_c(Cs, C1, Value).
   
 /* Check Adjacent */
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C + 1,
 	CP = C1,
 	L = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	LP is L + 1,
 	C = C1,
-	L+1 = L1.
+	LP = L1.
 
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C - 1,
 	CP = C1,
 	L = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	LP is L - 1,
 	C = C1,
 	LP = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C + 1,
 	LP is L + 1,
 	CP = C1,
 	LP = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C + 1,
 	LP is L - 1,
 	CP = C1,
 	LP = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C - 1,
 	LP is L + 1,
 	CP = C1,
 	LP = L1.
 	
-check_adjacent(C, L, C1, L1) :-
+check_adjacent(C, L, C1, L1, _, _) :-
 	CP is C - 1,
 	LP is L - 1,
 	CP = C1,
 	LP = L1.
  
-check_adjacent(_C, _L, _C1, _L1) :-
+check_adjacent(_C, _L, _C1, _L1, Player, Board) :-
 	write('Follow the rules!!!'), nl, 
-	write('YOU NEED TO BE ADJECENT!'), nl.
+	write('YOU NEED TO BE ADJECENT!'), nl,
+	play_pvp(Player, Board).
 
 /* Check Win Line */
 
