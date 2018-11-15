@@ -16,7 +16,7 @@ play_pvp(Player, Board) :-
 	read_position_to(Player, Board, C, L),
 	player(Player, Letter),
 	put_marker(Board, L, C, Letter, NewBoard),
-	print_board(5, NewBoard),
+	print_board(NewBoard),
 	Other is ((Player mod 2) + 1),
 	play_pvp(Other, NewBoard).
 
@@ -29,7 +29,7 @@ play_pvp(Player, Board) :-
 	check_adjacent(C, L, C1, L1, Player, Board),
 	put_marker(Board, L, C, e, NewBoard),
 	put_marker(NewBoard, L1, C1, Letter, MoreNewBoard),
-	print_board(5, MoreNewBoard),
+	print_board(MoreNewBoard),
 	Other is ((Player mod 2) + 1),
 	play_pvp(Other, MoreNewBoard).
 

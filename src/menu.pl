@@ -45,7 +45,7 @@ parse_option(1) :-
   nl, nl,
   write('Player1 -> '), black_circle, write('\t'),
   write('Player2 -> '), white_circle, nl,
-  print_board(5, B), nl,
+  print_board(B), nl,
   play_pvp(1, B),
   main_menu.
 
