@@ -173,9 +173,109 @@ valid_moves(Player, Board, List) :-
 			
 choose([], []).
 choose(List, Elt) :-
-        length(List, Length),
-        random(0, Length, Index),
-        nth0(Index, List, Elt).			
+	length(List, Length),
+	random(0, Length, Index),
+	nth0(Index, List, Elt).			
 
-/* Choose the Best Move */
-				
+goodMove(R,Col,board(T)):- append(I,[C|_],T),
+	length(I,Col),
+	maxConnected(R,C,MaxConn),
+	MaxConn >= 4.
+	
+maxConnected(_,[],0).
+
+maxConnected(R,[X|_],0):- 
+	X\=R.
+	
+maxConnected(R,['-'|X],N):- 
+	maxConnected(R,X,Ns),
+	N is Ns+1 .
+	
+maxConnected(R,[R|X],N):- 
+	maxConnected(R,X,Ns),
+	N is Ns + 1 .
+			  
+/* Choose the Win Move */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line],
+	put_marker(Board, Line, Col, Letter, NewBoard),
+	win(NewBoard, Letter), 
+	Move = [Col, Line], !.
+	
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line, ColP, LineP],
+	put_marker(Board, Line, Col, e, NewBoard),
+	put_marker(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+	win(MoreNewBoard, Letter), 
+	Move = [Col, Line, ColP, LineP], !.
+
+/* Select a move that doesn't allow the other player to win */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	Other is ((Player mod 2) + 1), 			/* pick valid moves for the other player */
+	player(Other, LetterO),
+	valid_moves(Other, Board, ListOther),
+	append(_, [H | _], ListOther),
+	H = [Col, Line],
+	put_marker(Board, Line, Col, LetterO, NewBoard),
+	win(NewBoard, LetterO), 				/* if there is a winning move */
+	valid_moves(Player, Board, List), 		/* let's block */
+	append(_, [H1 | _], List), 
+	[Col, Line] = H1,
+	Move = H1, !.
+	
+/* Select a move that doesn't allow the other player to win */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	Other is ((Player mod 2) + 1),	/* pick valid moves for the other player */
+	player(Other, LetterO),
+	valid_moves(Other, Board, ListOther),
+	append(_, [H | _], ListOther),
+	H = [Col, Line, ColP, LineP],
+	put_marker(Board, Line, Col, 'e', NewBoard),
+	put_marker(NewBoard, LineP, ColP, LetterO, MoreNewBoard),
+	win(MoreNewBoard, LetterO), 					/* if there is a winning move */
+	valid_moves(Player, Board, List), 			/* let's block */
+	append(_, [H1 | _], List), 
+	H1 = [Col1, Line1, ColP1, LineP1],			/* if there is a move that places a marker in that place */
+	ColP = ColP1,
+	LineP = LineP1,
+	Move = H1, !.
+	
+/* Select the move that allow to have 3 markers in line */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line],
+	put_marker(Board, Line, Col, Letter, NewBoard),
+	win_3(NewBoard, Letter), 
+	Move = [Col, Line], !.
+	
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line, ColP, LineP],
+	put_marker(Board, Line, Col, e, NewBoard),
+	put_marker(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+	win_3(MoreNewBoard, Letter), 
+	Move = [Col, Line, ColP, LineP], !.
