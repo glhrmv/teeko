@@ -3,7 +3,7 @@
 main_menu :-
   print_menu,
   print_prompt,
-  read(Input),
+  read(Input), skip_line,
   parse_option(Input).
 
 print_menu :-
@@ -17,8 +17,9 @@ print_menu :-
   double_vert, space(37), double_vert, nl,
   double_left_con, double_horiz(37), double_right_con, nl,
   double_vert, space(7), write('(1) Player vs. Player'), space(9), double_vert, nl,
-  double_vert, space(7), write('(2) Player vs. CPU'), space(12), double_vert, nl,
-  double_vert, space(7), write('(3) CPU vs. CPU'), space(15), double_vert, nl,
+  double_vert, space(7), write('(2) Player vs. CPU(1)'), space(9), double_vert, nl,
+  double_vert, space(7), write('(3) Player vs. CPU(2)'), space(9), double_vert, nl,
+  double_vert, space(7), write('(4) CPU vs. CPU'), space(15), double_vert, nl,
   double_vert, space(7), write('(0) Quit'), space(22), double_vert, nl,
   double_lb_corner, double_horiz(37), double_rb_corner, nl,
   %write('┌────────────────────────────────────────┐'), nl,
@@ -31,8 +32,9 @@ print_menu :-
   %write('│             Guilherme Vale             │'), nl,
   %write('├────────────────────────────────────────┤'), nl,
   %write('│         (1) Player vs Player           │'), nl,
-  %write('│         (2) Player vs Computer         │'), nl,
-  %write('│         (3) Computer vs Computer       │'), nl,
+  %write('│         (2) Player vs Computer(1)      │'), nl,
+  %write('│         (3) Player vs Computer(2)      │'), nl,
+  %write('│         (4) Computer vs Computer       │'), nl,
   %write('│         (0) Quit                       │'), nl,
   %write('└────────────────────────────────────────┘'), nl,
   nl.
@@ -50,10 +52,19 @@ parse_option(1) :-
   main_menu.
 
 parse_option(2) :-
+  board(B),
+  nl, nl,
+  write('Player1 -> '), black_circle, write('\t'),
+  write('Player2 -> '), white_circle, nl,
+  print_board(B), nl,
+  bot_1(1, B),
+  main_menu.
+  
+ parse_option(3) :-
   write('> '),
   main_menu.
 
-parse_option(3) :-
+parse_option(4) :-
   write('> '),
   main_menu.
 

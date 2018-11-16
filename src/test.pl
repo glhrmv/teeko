@@ -27,9 +27,9 @@ board3([[e,b,e,b,b],
 
 board4([
 [b,b,b,e,e],
-[e,e,e,e,e],
+[e,e,e,b,e],
 [e,w,w,e,e],
-[e,w,w,e,e],
+[e,w,e,w,e],
 [e,e,e,e,e]]).
 
 count_elements([],0).
