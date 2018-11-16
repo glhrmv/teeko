@@ -13,6 +13,7 @@
 :- ensure_loaded('board_state.pl').
 :- ensure_loaded('menu.pl').
 :- ensure_loaded('pvp.pl').
+:- ensure_loaded('bot.pl').
 
 teeko :-
   main_menu.
