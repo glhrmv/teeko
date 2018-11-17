@@ -82,8 +82,6 @@ direction (horizontal, vertical, or diagonal) or when they form a square of four
 
 ![Black wins in this scenario.](img/teeko_board_example1.jpg){width=300px height=300px}
 
-\pagebreak
-
 # Game logic
 
 The source code for this project was written iteratively, but with the everpresent aim of
@@ -225,17 +223,72 @@ This predicate has been implemented in the following way:
 
 ## Valid moves
 
+In order to find out what all of the possible moves for a particular player are
+from a given board state, the predicate `valid_moves(+Board, +Player, -ListOfMoves)` was
+developed. Its implementation is below.
+
+~~~prolog
+valid_moves(Player, Board, List) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  findall(
+  [Col, Line], 
+  (
+    col(Col), line(Line), 
+    check_free_space(Board, Col, Line, Value), 
+    Value = 'e' 
+  ), List).
+
+valid_moves(Player, Board, List) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  findall(
+  [Col, Line, ColP, LineP],
+  ( 
+    col(Col), line(Line), col(ColP), line(LineP),
+    check_free_space(Board, Col, Line, Value), Value = Letter,
+    check_free_space(Board, ColP, LineP, ValueP), ValueP = 'e',
+    check_adjacent(Col, Line, ColP, LineP)
+  ), List).
+~~~
+
 ## Moving markers
 
+`move(+Move, +Board, -NewBoard)`
 
+This predicate has been implemented in the following way:
+
+~~~prolog
+~~~
 
 ## End of game detection
 
+`game_over(+Board, -Winner)`
+
+This predicate has been implemented in the following way:
+
+~~~prolog
+~~~
+
 ## Board state evaluation
+
+`value(+Board, +Player, -Value)`
+
+This predicate has been implemented in the following way:
+
+~~~prolog
+~~~
 
 ## Computer movement
 
+`choose_move(+Board, +Level, -Move)`
 
+This predicate has been implemented in the following way:
+
+~~~prolog
+~~~
 
 \newpage
 
