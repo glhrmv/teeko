@@ -203,9 +203,13 @@ choose(List, Elt) :-
 	length(List, Length),
 	random(0, Length, Index),
 	nth0(Index, List, Elt).
-			  
+
+
+
+choose_move(Player, Board, Move):-
+	get_move(Player,Board,Move,Value).
 /* Choose the Win Move */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -216,7 +220,7 @@ choose_move(Player, Board, Move) :-
 	game_over(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -229,7 +233,7 @@ choose_move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 
 /* Select a move that doesn't allow the other player to win */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -246,7 +250,7 @@ choose_move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select a move that doesn't allow the other player to win */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -266,7 +270,7 @@ choose_move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select the move that allow to have 3 markers in line */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -277,7 +281,7 @@ choose_move(Player, Board, Move) :-
 	win_3(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -290,7 +294,7 @@ choose_move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 	
 /* Select a move that doesn't allow the other player to have 3 marks in line in the first phase round */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -307,7 +311,7 @@ choose_move(Player, Board, Move) :-
 	Move = H1, !.
 
 /* If it is a first phase game don't allow the other player to place more the 3rd marker in row */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -324,7 +328,7 @@ choose_move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select the move that allow to have 2 markers in line */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -335,7 +339,7 @@ choose_move(Player, Board, Move) :-
 	win_2(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -348,7 +352,7 @@ choose_move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 	
 /* Select Random Move */
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -356,7 +360,7 @@ choose_move(Player, Board, Move) :-
 	choose(List, [C, L|_]),
 	Move = [C,L].
 	
-choose_move(Player, Board, Move) :-
+get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -364,4 +368,4 @@ choose_move(Player, Board, Move) :-
 	choose(List, [C, L, C1, L1|_]),
 	Move = [C,L, C1, L1].
 
-	
+
