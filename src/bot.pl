@@ -1,3 +1,5 @@
+/* Bot logic */
+
 col(0).
 col(1).
 col(2).

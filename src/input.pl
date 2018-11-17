@@ -54,3 +54,4 @@ read_position_to_check_from(Player, Board, Columm, Line) :-
 read_position_to_check_from(Player, Board, _Columm, _Line) :-
 	write('That is not your marker!!'), nl,
 	play_pvp(Player, Board).
+

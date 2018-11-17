@@ -34,7 +34,7 @@ and the [SICStus Prolog][1] development system.
 The end result of the project should be a playable version of the game in a
 [command-line interface (CLI)][2] inside the SICStus Prolog interactive shell.
 
-The project was developed using **Git** for version control and an online GitHub repository
+This project was developed using **Git** for version control and an online GitHub repository
 is available at [github.com/glhrmv/teeko][3], containing all of the work developed.
 
 [1]: https://sicstus.sics.se/
@@ -197,18 +197,18 @@ The game board will be defined as such, where:
 - `X` represents an X marker
 
 ~~~
-    1   2   3   4   5
-  ---------------------
-a |   |   | W |   |   |
-  ---------------------
-b |   | B | W | W |   |
-  ---------------------
-c |   | W | B |   |   |
-  ---------------------
-d |   |   | B | B |   |
-  ---------------------
-e |   |   |   |   |   |
-  ---------------------
+     A  B  C  D  E
+    ┌───┬───┬───┬───┬───┐
+  0 │   │ X │ O │ X │ X │
+    ├───┼───┼───┼───┼───┤
+  1 │   │   │   │ O │ O │
+    ├───┼───┼───┼───┼───┤
+  2 │   │ O │   │   │   │
+    ├───┼───┼───┼───┼───┤
+  3 │   │   │   │   │   │
+    ├───┼───┼───┼───┼───┤
+  4 │   │ X │   │   │   │
+    └───┴───┴───┴───┴───┘
 ~~~
 
 In order to print this board on the screen, some Prolog predicates need to be defined.
@@ -234,6 +234,8 @@ This predicate has been implemented in the following way:
 ## Board state evaluation
 
 ## Computer movement
+
+
 
 \newpage
 

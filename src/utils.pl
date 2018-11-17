@@ -1,7 +1,7 @@
 /* Utilities */
 
-player(1, Value) :- Value = b.
-player(2, Value) :- Value = w.
+player(1, Value) :- Value = o.
+player(2, Value) :- Value = x.
 
 /* Count number of marker Piece in a board */
 count_markers([], _Piece, 0).
@@ -60,11 +60,12 @@ double_horiz :- put_code(9552).
 double_left_con :- put_code(9568).
 double_right_con :- put_code(9571).
 
-black_circle :- put_code(11044).
-white_circle :- put_code(11093).
+black_circle :- write('O').
+white_circle :- write('X').
 
 double_horiz(0).
 double_horiz(N) :- double_horiz, N1 is N-1, double_horiz(N1).
 
 space(0).
 space(N) :- write(' '), N1 is N-1, space(N1).
+

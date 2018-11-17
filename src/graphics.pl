@@ -113,13 +113,13 @@ print_marker([e|Line]) :-
   write('  '),
   print_marker(Line).
 
-print_marker([b|Line]) :-
+print_marker([o|Line]) :-
   vert,
   black_circle,
   write(' '),
   print_marker(Line).
 
-print_marker([w|Line]) :-
+print_marker([x|Line]) :-
   vert,
   white_circle,
   write(' '),
