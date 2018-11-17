@@ -132,26 +132,24 @@ bot_2(2, Board) :-
 	player(2, Value),
 	count_markers(Board, Value, Count),
 	Count < 4,
-	valid_moves(2, Board, List),
-	choose(List, [C,L|_]),
+	is_win_move(2, Board, [C, L| _]),
 	player(2, Letter),
 	put_marker(Board, L, C, Letter, NewBoard),
 	print_board(NewBoard),
 	Other is ((2 mod 2) + 1),
-	bot_1(Other, NewBoard).
+	bot_2(Other, NewBoard).
 	
 bot_2(2, Board) :-
 	player(2, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
-	valid_moves(2, Board, List),
-	choose(List, [C, L, C1, L1|_]),
+	is_win_move(2, Board, [C, L, C1, L1| _]),
 	check(C, L, C1, L1, 2, Board),
 	put_marker(Board, L, C, e, NewBoard),
 	put_marker(NewBoard, L1, C1, Letter, MoreNewBoard),
 	print_board(MoreNewBoard),
 	Other is ((2 mod 2) + 1),
-	bot_1(Other, MoreNewBoard).
+	bot_2(Other, MoreNewBoard).
 
 /* Valid Moves For Bot */
 valid_moves(Player, Board, List) :-
@@ -175,25 +173,7 @@ choose([], []).
 choose(List, Elt) :-
 	length(List, Length),
 	random(0, Length, Index),
-	nth0(Index, List, Elt).			
-
-goodMove(R,Col,board(T)):- append(I,[C|_],T),
-	length(I,Col),
-	maxConnected(R,C,MaxConn),
-	MaxConn >= 4.
-	
-maxConnected(_,[],0).
-
-maxConnected(R,[X|_],0):- 
-	X\=R.
-	
-maxConnected(R,['-'|X],N):- 
-	maxConnected(R,X,Ns),
-	N is Ns+1 .
-	
-maxConnected(R,[R|X],N):- 
-	maxConnected(R,X,Ns),
-	N is Ns + 1 .
+	nth0(Index, List, Elt).
 			  
 /* Choose the Win Move */
 is_win_move(Player, Board, Move) :-
@@ -251,7 +231,7 @@ is_win_move(Player, Board, Move) :-
 	win(MoreNewBoard, LetterO), 					/* if there is a winning move */
 	valid_moves(Player, Board, List), 			/* let's block */
 	append(_, [H1 | _], List), 
-	H1 = [Col1, Line1, ColP1, LineP1],			/* if there is a move that places a marker in that place */
+	H1 = [ _, _, ColP1, LineP1],			/* if there is a move that places a marker in that place */
 	ColP = ColP1,
 	LineP = LineP1,
 	Move = H1, !.
@@ -279,3 +259,20 @@ is_win_move(Player, Board, Move) :-
 	put_marker(NewBoard, LineP, ColP, Letter, MoreNewBoard),
 	win_3(MoreNewBoard, Letter), 
 	Move = [Col, Line, ColP, LineP], !.
+	
+/* Select Random Move */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	valid_moves(Player, Board, List),
+	choose(List, [C, L|_]),
+	Move = [C,L].
+	
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	valid_moves(Player, Board, List),
+	choose(List, [C, L, C1, L1|_]),
+	Move = [C,L, C1, L1].

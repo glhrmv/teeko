@@ -61,7 +61,12 @@ parse_option(2) :-
   main_menu.
   
  parse_option(3) :-
-  write('> '),
+  board(B),
+  nl, nl,
+  write('Player1 -> '), black_circle, write('\t'),
+  write('Player2 -> '), white_circle, nl,
+  print_board(B), nl,
+  bot_2(1, B),
   main_menu.
 
 parse_option(4) :-
