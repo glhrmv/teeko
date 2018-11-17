@@ -303,6 +303,23 @@ move(Player, Board, Move) :-
 	append(_, [H1 | _], List), 
 	[Col, Line] = H1,
 	Move = H1, !.
+
+/* If it is a first phase game don't allow the other player to place more the 3rd marker in row */
+move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	Other is ((Player mod 2) + 1), 			/* pick valid moves for the other player */
+	player(Other, LetterO),
+	valid_moves(Other, Board, ListOther),
+	append(_, [H | _], ListOther),
+	H = [Col, Line],
+	move(Board, Line, Col, LetterO, NewBoard),
+	win_3(NewBoard, LetterO), 				/* if there is a 3rd marker move */
+	valid_moves(Player, Board, List), 		/* let's block */
+	append(_, [H1 | _], List), 
+	[Col, Line] = H1,
+	Move = H1, !.
 	
 /* Select the move that allow to have 2 markers in line */
 move(Player, Board, Move) :-

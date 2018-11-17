@@ -119,11 +119,11 @@ game_over(Board, Player) :-
   append(_, [Column | _], Board),
   check_column(Column, Player).
 
-/* If There Is a Move that will bring 3 Connected */
-/* Vertical win condition */
+/* If There Is a Move that will bring 3 Connected 
+   Vertical win condition */
 win_3(Board, Player) :-
   append(_, [Column | _], Board),
-  check_column(Column, Player).
+  check_column_3(Column, Player).
 
 /* Horizontal win condition */
 win_3(Board, Player) :-
