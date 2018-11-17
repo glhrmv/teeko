@@ -10,7 +10,6 @@ count_markers([Line | Lines], Piece, Count) :-
   count_markers(Lines, Piece, NNCount),
   Count is (NCount + NNCount).
 
-/* Count number of elements in a given list */
 count_elem([], _X, 0).
 count_elem([X|T],X,Y) :- count_elem(T,X,Z), Y is 1+Z.
 count_elem([X1|T],X,Z) :- X1\=X,count_elem(T,X,Z).
