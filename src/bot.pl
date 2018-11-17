@@ -211,7 +211,7 @@ move(Player, Board, Move) :-
 	append(_, [H | _], List),
 	H = [Col, Line],
 	move(Board, Line, Col, Letter, NewBoard),
-	win(NewBoard, Letter), 
+	game_over(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
 move(Player, Board, Move) :-
@@ -223,7 +223,7 @@ move(Player, Board, Move) :-
 	H = [Col, Line, ColP, LineP],
 	move(Board, Line, Col, e, NewBoard),
 	move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
-	win(MoreNewBoard, Letter), 
+	game_over(MoreNewBoard, Letter), 
 	Move = [Col, Line, ColP, LineP], !.
 
 /* Select a move that doesn't allow the other player to win */
@@ -237,7 +237,7 @@ move(Player, Board, Move) :-
 	append(_, [H | _], ListOther),
 	H = [Col, Line],
 	move(Board, Line, Col, LetterO, NewBoard),
-	win(NewBoard, LetterO), 				/* if there is a winning move */
+	game_over(NewBoard, LetterO), 				/* if there is a winning move */
 	valid_moves(Player, Board, List), 		/* let's block */
 	append(_, [H1 | _], List), 
 	[Col, Line] = H1,
@@ -255,7 +255,7 @@ move(Player, Board, Move) :-
 	H = [Col, Line, ColP, LineP],
 	move(Board, Line, Col, 'e', NewBoard),
 	move(NewBoard, LineP, ColP, LetterO, MoreNewBoard),
-	win(MoreNewBoard, LetterO), 					/* if there is a winning move */
+	game_over(MoreNewBoard, LetterO), 					/* if there is a winning move */
 	valid_moves(Player, Board, List), 			/* let's block */
 	append(_, [H1 | _], List), 
 	H1 = [ _, _, ColP1, LineP1],			/* if there is a move that places a marker in that place */
