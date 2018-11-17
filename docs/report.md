@@ -16,6 +16,10 @@ documentclass: scrartcl
 bibliography: references.bib
 ---
 
+\begin{center}
+\includegraphics[width=200pt]{img/feup.png}
+\end{center}
+
 \newpage
 
 \tableofcontents
@@ -86,7 +90,7 @@ The source code for this project was written iteratively, but with the everprese
 modularizing all logic into its own respective file, e.g. all menu-related logic was
 placed in `menu.pl`, etc.. The entry point of the game itself is located in `teeko.pl`,
 wherein all of the SICStus Prolog standard library modules and the other source files
-written are loaded. 
+written are loaded.
 
 The following is all of the source code files used in development.
 
@@ -117,10 +121,31 @@ Where:
 - `utils.pl` contains miscellaneous utility predicates used throughout the project.
 
 Some concessions had to be made regarding the representation of the players' markers
-on the game board, due to the restricted nature of the command-line interface and due
-to the usage of special Unicode characters to represent each player. 
+on the game board, due to the restricted nature of the command-line interface and the
+difficulties faced when trying to use special Unicode characters to represent players
+with black and red circle symbols, for each respective player.
 
-Instead of having a 
+The SICStus Prolog development system does not provide an easy way to write
+strings onto the screen with special Unicode characters, e.g, `├` or `╗`, with its
+[`write/1`][4] predicate.
+Instead, for printing individual special symbols like these and others, the usage
+of dedicated predicates like [`put_code/1`][5] were required.
+
+This is good enough for displaying the board and the main menu with these sorts of
+special characters for a better aesthetic, but an issue arised when trying to come up
+with symbols for displaying each player's markers. Initially, the red circle symbol
+(U+1F534) was chosen for the Red player's markers, and the black circle symbol (U+2B24)
+for Black player's markers. This quickly posed a problem when trying to test the game
+under different conditions, i.e., terminal emulators, operating systems,
+colour schemes, etc.
+
+Instead of trying to find a cross-platform solution for this problem, the "Black" and "Red"
+terminology was abandonded in favour of a more traditional approach: one player would control
+markers that look like `O` on the screen, and would be referred to as Player O, and the other
+player's markers look like `X` on the screen, and known as Player X.
+
+[4]: https://sicstus.sics.se/sicstus/docs/4.2.0/html/sicstus/mpg_002dref_002dwrite.html
+[5]: https://sicstus.sics.se/sicstus/docs/4.2.0/html/sicstus/mpg_002dref_002dput_005fcode.html
 
 ## Board definition
 
@@ -142,36 +167,34 @@ board([
 
 ~~~prolog
 /* Intermediate board: Some markers on the board, neither player winning */
-/* The atom b represents the Black markers */
-/* The atom w epresents the White markers */
+/* The atom o represents the O markers */
+/* The atom x epresents the X markers */
 board([
-  [e, e, b, e, e],
-  [e, e, b, w, b],
-  [e, e, b, w, e],
-  [e, w, w, e, e],
+  [e, e, o, e, e],
+  [e, e, o, x, o],
+  [e, e, o, x, e],
+  [e, x, x, e, e],
   [e, e, e, e, e]
 ]).
 ~~~
 
 ~~~prolog
-/* Finishing board: Black wins in this scenario */
+/* Finishing board: Player O wins in this scenario */
 board([
   [e, e, e, e, e],
-  [e, w, b, e, e],
-  [e, e, b, e, e],
-  [e, w, b, w, e],
-  [e, w, b, e, e]
+  [e, x, o, e, e],
+  [e, e, o, e, e],
+  [e, x, o, x, e],
+  [e, x, o, e, e]
 ]).
 ~~~
-
-\newpage
 
 ## Board visualization
 
 The game board will be defined as such, where:
 
-- B represents a black marker
-- W represents a white marker
+- `O` represents an O marker
+- `X` represents an X marker
 
 ~~~
     1   2   3   4   5
@@ -189,7 +212,7 @@ e |   |   |   |   |   |
 ~~~
 
 In order to print this board on the screen, some Prolog predicates need to be defined.
-The main predicate that will print the state of the game is named `display_game(+Board, +Player)`.
+The main predicate that will print the state of the game is called `display_game(+Board, +Player)`.
 It will first print the board in a way similar to the example above, and then print
 some information regarding what can be done from this state: either a winning condition is
 found and victory is granted to the respective player and the game is over,
@@ -204,6 +227,8 @@ This predicate has been implemented in the following way:
 
 ## Moving markers
 
+
+
 ## End of game detection
 
 ## Board state evaluation
@@ -215,12 +240,12 @@ This predicate has been implemented in the following way:
 # Conclusion
 
 The usage of logic programming was very quickly appreciated for the way it trivializes
-and simplifies otherwise very tedious processes and computations in more traditional, 
-imperative programming languages, particularly when writing the logic to gather the 
+and simplifies otherwise very tedious processes and computations in more traditional,
+imperative programming languages, particularly when writing the logic to gather the
 list of valid moves, and checking the board state for a win condition.
 
 There was an initial hurdle since there was very little prior experience with Prolog
-before this project, but the results are gratifying and a new and invaluable insight 
+before this project, but the results are gratifying and a new and invaluable insight
 into developing complex systems with several layers of internal logic was gained.
 
 Some of the code can still be better modularised and refactored, along with the
