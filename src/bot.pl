@@ -24,7 +24,7 @@ bot_3(Player, Board) :-
 	player(Player, Value),
 	count_markers(Board, Value, Count),
 	Count < 4,
-	move(Player, Board, [C, L| _]),
+	choose_move(Player, Board, [C, L| _]),
 	player(Player, Letter),
 	move(Board, L, C, Letter, NewBoard),
 	print_board(NewBoard),
@@ -35,7 +35,7 @@ bot_3(Player, Board) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
-	move(Player, Board, [C, L, C1, L1| _]),
+	choose_move(Player, Board, [C, L, C1, L1| _]),
 	check(C, L, C1, L1, Player, Board),
 	move(Board, L, C, e, NewBoard),
 	move(NewBoard, L1, C1, Letter, MoreNewBoard),
@@ -161,7 +161,7 @@ bot_2(2, Board) :-
 	player(2, Value),
 	count_markers(Board, Value, Count),
 	Count < 4,
-	move(2, Board, [C, L| _]),
+	choose_move(2, Board, [C, L| _]),
 	player(2, Letter),
 	move(Board, L, C, Letter, NewBoard),
 	print_board(NewBoard),
@@ -172,7 +172,7 @@ bot_2(2, Board) :-
 	player(2, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
-	move(2, Board, [C, L, C1, L1| _]),
+	choose_move(2, Board, [C, L, C1, L1| _]),
 	check(C, L, C1, L1, 2, Board),
 	move(Board, L, C, e, NewBoard),
 	move(NewBoard, L1, C1, Letter, MoreNewBoard),
@@ -205,7 +205,7 @@ choose(List, Elt) :-
 	nth0(Index, List, Elt).
 			  
 /* Choose the Win Move */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -216,7 +216,7 @@ move(Player, Board, Move) :-
 	game_over(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -229,7 +229,7 @@ move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 
 /* Select a move that doesn't allow the other player to win */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -246,7 +246,7 @@ move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select a move that doesn't allow the other player to win */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -266,7 +266,7 @@ move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select the move that allow to have 3 markers in line */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -277,7 +277,7 @@ move(Player, Board, Move) :-
 	win_3(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -290,7 +290,7 @@ move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 	
 /* Select a move that doesn't allow the other player to have 3 marks in line in the first phase round */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -307,7 +307,7 @@ move(Player, Board, Move) :-
 	Move = H1, !.
 
 /* If it is a first phase game don't allow the other player to place more the 3rd marker in row */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -324,7 +324,7 @@ move(Player, Board, Move) :-
 	Move = H1, !.
 	
 /* Select the move that allow to have 2 markers in line */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -335,7 +335,7 @@ move(Player, Board, Move) :-
 	win_2(NewBoard, Letter), 
 	Move = [Col, Line], !.
 	
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
@@ -348,7 +348,7 @@ move(Player, Board, Move) :-
 	Move = [Col, Line, ColP, LineP], !.
 	
 /* Select Random Move */
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count < 4,
@@ -356,10 +356,12 @@ move(Player, Board, Move) :-
 	choose(List, [C, L|_]),
 	Move = [C,L].
 	
-move(Player, Board, Move) :-
+choose_move(Player, Board, Move) :-
 	player(Player, Letter),
 	count_markers(Board, Letter, Count),
 	Count = 4,
 	valid_moves(Player, Board, List),
 	choose(List, [C, L, C1, L1|_]),
 	Move = [C,L, C1, L1].
+
+	
