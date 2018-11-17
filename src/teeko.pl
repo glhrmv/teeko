@@ -14,8 +14,6 @@
 :- ensure_loaded('menu.pl').
 :- ensure_loaded('pvp.pl').
 :- ensure_loaded('bot.pl').
-:- ensure_loaded('input_b1.pl').
-:- ensure_loaded('input_b2.pl').
 
 teeko :-
   main_menu.
