@@ -8,6 +8,8 @@ line(1).
 line(2).
 line(3).
 line(4).
+/* Bot vs Bot */
+
 
 /* Bot lvl1 logic */
 
@@ -16,16 +18,14 @@ bot_1(2, Board) :-
 	player(Other, Value),
 	win(Board, Value),
 	write(Other),
-	write('You won!'), nl,
-	halt.
+	write('You won!'), nl.
 	
 bot_1(1, Board) :-
 	Other is ((1 mod 2) + 1),
 	player(Other, Value),
 	win(Board, Value),
 	write(Other),
-	write('Bot won!'), nl,
-	halt.
+	write('Bot won!'), nl.
 		
 /*Player to play*/
 
@@ -88,16 +88,14 @@ bot_2(2, Board) :-
 	player(Other, Value),
 	win(Board, Value),
 	write(Other),
-	write('You won!'), nl,
-	halt.
+	write('You won!'), nl.
 	
 bot_2(1, Board) :-
 	Other is ((1 mod 2) + 1),
 	player(Other, Value),
 	win(Board, Value),
 	write(Other),
-	write('Bot won!'), nl,
-	halt.
+	write('Bot won!'), nl.
 		
 /*Player to play*/
 

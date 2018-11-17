@@ -5,8 +5,7 @@ play_pvp(Player, Board) :-
 	player(Other, Value),
 	win(Board, Value),
 	write(Other),
-	write('You won!'),
-	halt.
+	write('You won!').
 
 play_pvp(Player, Board) :-
 	write('To play: Player'), write(Player), nl,
