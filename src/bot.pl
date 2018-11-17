@@ -8,11 +8,40 @@ line(1).
 line(2).
 line(3).
 line(4).
+
 /* Bot vs Bot */
-
-
+bot_3(Player, Board) :-
+	Other is ((Player mod 2) + 1),
+	player(Other, Value),
+	win(Board, Value),
+	write(Other),
+	write('Bot won!').
+	
+bot_3(Player, Board) :-
+	write('Bot to play: '), write(Player), nl,
+	player(Player, Value),
+	count_markers(Board, Value, Count),
+	Count < 4,
+	is_win_move(Player, Board, [C, L| _]),
+	player(Player, Letter),
+	put_marker(Board, L, C, Letter, NewBoard),
+	print_board(NewBoard),
+	Other is ((Player mod 2) + 1),
+	bot_3(Other, NewBoard).
+	
+bot_3(Player, Board) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	is_win_move(Player, Board, [C, L, C1, L1| _]),
+	check(C, L, C1, L1, Player, Board),
+	put_marker(Board, L, C, e, NewBoard),
+	put_marker(NewBoard, L1, C1, Letter, MoreNewBoard),
+	print_board(MoreNewBoard),
+	Other is ((Player mod 2) + 1),
+	bot_3(Other, MoreNewBoard).
+	
 /* Bot lvl1 logic */
-
 bot_1(2, Board) :-
 	Other is ((2 mod 2) + 1),
 	player(Other, Value),
