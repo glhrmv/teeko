@@ -14,24 +14,24 @@ read_position_to(Player, Board, Columm, Line) :-
 	Line is LNumber.
 
 read_position_to(Player, Board, _, _) :-
-	write('Invalid position choice. Remember:'), nl,
+	write('Invalid position choice. Remember: '), nl,
 	write('Columm: A to E'), nl,
 	write('Line: 0 to 4'), nl,
 	play_pvp(Player, Board).
-
+	
 read_position_from(Player, Board, Columm, Line) :-
 	write('Get the Piece in Column: '), nl,
 	get_code(C), skip_line,
 	C > 64, C < 70,
 	write('Get the Piece in Line: '), nl,
-	get_code(L), skip_line,
+	get_code(L), skip_line,	
 	L > 47, L < 53,
 	CNumber is C - 65,
 	LNumber is L - 48,
 	read_position_to_check_from(Player, Board, CNumber, LNumber),
 	Columm is CNumber,
 	Line is LNumber.
-
+	
 read_position_from(Player, Board, _, _) :-
 	write('Erro na escolha do campo. Relembre:!'), nl,
 	write('Columm: A to E'), nl,

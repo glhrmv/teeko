@@ -27,13 +27,13 @@ check_free_space_c([_|Cs], Columm, Value) :-
 
 /* Check Adjacent */
 check(C, L, C1, L1, _Player, _Board) :-
-  check_adjacent(C, L, C1, L1).
-
+	check_adjacent(C, L, C1, L1).
+		
 check(_C, _L, _C1, _L1, Player, Board) :-
   write('Follow the rules!!!'), nl,
   write('YOU NEED TO BE ADJECENT!'), nl,
   play_pvp(Player, Board).
-
+	
 check_adjacent(C, L, C1, L1) :-
   CP is C + 1,
   CP = C1,
@@ -77,21 +77,23 @@ check_adjacent(C, L, C1, L1) :-
   LP is L - 1,
   CP = C1,
   LP = L1.
+
+
 
 /* Check Win Line */
 
 /* Vertical win condition */
-win(Board, Player) :-
+game_over(Board, Player) :-
   append(_, [Column | _], Board),
   check_column(Column, Player).
 
 /* Horizontal win condition */
-win(Board, Player) :-
+game_over(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   check_rows(Col1, Col2, Col3, Col4, Player).
 
 /* Diagonal win condition type 1 (decreasing rows) */
-win(Board, Player) :-
+game_over(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   Col2 = [_ | NewCol2],
   Col3 = [_, _ | NewCol3],
@@ -99,7 +101,7 @@ win(Board, Player) :-
   check_rows(Col1, NewCol2, NewCol3, NewCol4, Player).
 
 /* Diagonal win condition type 2 (increasing rows) */
-win(Board, Player) :-
+game_over(Board, Player) :-
   append(_, [Col1, Col2, Col3, Col4 | _], Board),
   Col1 = [_, _, _ | NewCol1],
   Col2 = [_, _ | NewCol2],
@@ -107,21 +109,21 @@ win(Board, Player) :-
   check_rows(NewCol1, NewCol2, NewCol3, Col4, Player).
 
 /* Square win condition */
-win(Board, Player) :-
+game_over(Board, Player) :-
   append(_, [Col1, Col2| _], Board),
   Col1 = [_| Col3],
   Col2 = [_| Col4],
   check_rows(Col1, Col2, Col3, Col4, Player).
-
-win(Board, Player) :-
+  
+game_over(Board, Player) :-
   append(_, [Column | _], Board),
   check_column(Column, Player).
 
-/* If There Is a Move that will bring 3 Connected */
-/* Vertical win condition */
+/* If There Is a Move that will bring 3 Connected 
+   Vertical win condition */
 win_3(Board, Player) :-
   append(_, [Column | _], Board),
-  check_column(Column, Player).
+  check_column_3(Column, Player).
 
 /* Horizontal win condition */
 win_3(Board, Player) :-
@@ -147,7 +149,7 @@ win_3(Board, Player) :-
   append(_, [Col1, Col2| _], Board),
   Col1 = [_| Col3],
   check_rows_3(Col1, Col2, Col3, Player).
-
+  
 check_column_3([Player, Player, Player| _], Player).
 check_column_3([_ | Under], Player) :-
   check_column_3(Under, Player).
@@ -155,7 +157,7 @@ check_column_3([_ | Under], Player) :-
 check_rows_3([Player | _], [Player | _], [Player | _], Player).
 check_rows_3([_ | Under1], [_ | Under2], [_ | Under3], Player) :-
   check_rows_3(Under1, Under2, Under3, Player).
-
+  
 /* If There Is a Move that will bring 2 Connected */
 /* Vertical win condition */
 win_2(Board, Player) :-
@@ -178,7 +180,7 @@ win_2(Board, Player) :-
   append(_, [Col3, Col4 | _], Board),
   Col3 = [_ | NewCol3],
   check_rows_2(NewCol3, Col4, Player).
-
+  
 check_column_2([Player, Player| _], Player).
 check_column_2([_ | Under], Player) :-
   check_column_2(Under, Player).
