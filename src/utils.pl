@@ -15,7 +15,7 @@ count_elem([X|T],X,Y) :- count_elem(T,X,Z), Y is 1+Z.
 count_elem([X1|T],X,Z) :- X1\=X,count_elem(T,X,Z).
 
 /* To put a marker in the board */
-put_marker(B, X, Y, Letter, R) :-
+move(B, X, Y, Letter, R) :-
   find_line(B, X, Y, Letter, R).
 
 find_line([L|Ls], 0, Y, Z, [R|Ls]) :-
