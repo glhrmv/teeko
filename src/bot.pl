@@ -260,6 +260,30 @@ is_win_move(Player, Board, Move) :-
 	win_3(MoreNewBoard, Letter), 
 	Move = [Col, Line, ColP, LineP], !.
 	
+/* Select the move that allow to have 2 markers in line */
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count < 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line],
+	put_marker(Board, Line, Col, Letter, NewBoard),
+	win_2(NewBoard, Letter), 
+	Move = [Col, Line], !.
+	
+is_win_move(Player, Board, Move) :-
+	player(Player, Letter),
+	count_markers(Board, Letter, Count),
+	Count = 4,
+	valid_moves(Player, Board, List),
+	append(_, [H | _], List),
+	H = [Col, Line, ColP, LineP],
+	put_marker(Board, Line, Col, e, NewBoard),
+	put_marker(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+	win_2(MoreNewBoard, Letter), 
+	Move = [Col, Line, ColP, LineP], !.
+	
 /* Select Random Move */
 is_win_move(Player, Board, Move) :-
 	player(Player, Letter),
