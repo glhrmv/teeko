@@ -1,12 +1,16 @@
 ---
 title: Logic Programming - Project 1
-subtitle: Final report
-date: "2018/2019"
+subtitle: Final Report - Teeko3
+date: "November 2018"
 author:
 - Guilherme Vale (201709049)
 - Pedro Azevedo (201306026)
 institute: FEUP
+keywords: [logic, prolog, game]
 
+monofont: Source Code Pro
+linkcolor: black
+urlcolor: blue
 numbersections: true
 documentclass: scrartcl
 bibliography: references.bib
@@ -14,7 +18,26 @@ bibliography: references.bib
 
 \newpage
 
+\tableofcontents
+
+\newpage
+
 # Introduction
+
+The primary goal of this project is to design and develop a faithful recreation of the
+board game **Teeko** using logic programming, specifically, using the programming language **Prolog**
+and the [SICStus Prolog][1] development system.
+The end result of the project should be a playable version of the game in a
+[command-line interface (CLI)][2] inside the SICStus Prolog interactive shell.
+
+The project was developed using **Git** for version control and an online GitHub repository
+is available at [github.com/glhrmv/teeko][3], containing all of the work developed.
+
+[1]: https://sicstus.sics.se/
+[2]: https://en.wikipedia.org/wiki/Command-line_interface
+[3]: https://github.com/glhrmv/teeko
+
+\newpage
 
 # Teeko
 
@@ -26,12 +49,10 @@ Teeko was marketed by Scarne's company, John Scarne Games Inc.;
 its quirky name, he said, borrowed letters from Tic-tac-toe, Chess, Checkers, and Bingo [@teeko_etymology].
 
 Teeko is a 2-player board game played on a board of 5x5 possible positions.
-Game pieces in Teeko are typically called 'markers', and will henceforth be referred to as such.
+Game pieces in Teeko are typically called '**markers**', and will henceforth be referred to as such.
 Both players have 4 markers each, with a particular colour of marker for each player.
 
-In the original Teeko game, players had two (2) colours of markers: black, and red.
-For the sake of easy discernment of the board state in this project, the markers are
-instead available in black and white,
+In the original Teeko game, players had two (2) colours of markers: black, and red,
 with the player controlling the black markers known as Black, and the other as Red.
 
 ![A Teeko game ready to be played.](img/teeko_irl.jpg){width=500px}
@@ -60,6 +81,46 @@ direction (horizontal, vertical, or diagonal) or when they form a square of four
 \pagebreak
 
 # Game logic
+
+The source code for this project was written iteratively, but with the everpresent aim of
+modularizing all logic into its own respective file, e.g. all menu-related logic was
+placed in `menu.pl`, etc.. The entry point of the game itself is located in `teeko.pl`,
+wherein all of the SICStus Prolog standard library modules and the other source files
+written are loaded. 
+
+The following is all of the source code files used in development.
+
+```
+src/
+├── board_state.pl
+├── bot.pl
+├── graphics.pl
+├── input.pl
+├── menu.pl
+├── pvp.pl
+├── rules.pl
+├── teeko.pl
+├── test.pl
+└── utils.pl
+```
+
+Where:
+
+- `board_state.pl` contains the initial game board definition.
+- `bot.pl` contains all bot-related logic.
+- `graphics.pl` contains all graphics-related logic, i.e., printing the game board onto the screen.
+- `input.pl` contains all user input-related logic, e.g., parsing a user's desired position to move to.
+- `menu.pl` contains the main menu logic.
+- `pvp.pl` contains all player-related logic, e.g., moving pieces.
+- `rules.pl` contains all rules-related logic
+- `teeko.pl` is the entry point of the project, containing the `teeko/0` predicate that will initiate play.
+- `utils.pl` contains miscellaneous utility predicates used throughout the project.
+
+Some concessions had to be made regarding the representation of the players' markers
+on the game board, due to the restricted nature of the command-line interface and due
+to the usage of special Unicode characters to represent each player. 
+
+Instead of having a 
 
 ## Board definition
 
@@ -137,59 +198,6 @@ or it will display which player's turn it is to move.
 This predicate has been implemented in the following way:
 
 ~~~prolog
-:-use_module(library(lists)).
-
-count_elements([],0).
-count_elements([_|Tail], N) :-
-  count_elements(Tail, X),
-  N is X+1.
-
-% Board grid line indicators
-print_char(4) :-
-  write(' A ').
-print_char(3) :-
-  write(' B ').
-print_char(2) :-
-  write(' C ').
-print_char(1) :-
-  write(' D ').
-print_char(0) :-
-  write(' E ').
-
-% Board position indicators
-print_char(e) :-
-  write(' ').
-print_char(b) :-
-  write('B').
-print_char(w) :-
-  write('W').
-
-print_line([]):-
-  write('|'),
-  write('\n').
-
-print_line([Char | Chars]):-
-  write('| '),
-  print_char(Char),
-  write(' '),
-  print_line(Chars).
-
-% display_game(+Board, +Player)
-display_game([], _Player):-
-  write('   ---------------------'),
-  write('\n').
-
-display_game([L | Ls], _Player) :-
-  count_elements(Ls, Y),
-  (Y =:= 4 ->
-    write('\n     1   2   3   4   5  \n'),
-    write('   ---------------------')
-  ; write('   ---------------------')
-  ),
-  write('\n'),
-  print_char(Y),
-  print_line(L),
-  display_game(Ls, _Player).
 ~~~
 
 ## Valid moves
@@ -202,7 +210,22 @@ display_game([L | Ls], _Player) :-
 
 ## Computer movement
 
+\newpage
+
 # Conclusion
+
+The usage of logic programming was very quickly appreciated for the way it trivializes
+and simplifies otherwise very tedious processes and computations in more traditional, 
+imperative programming languages, particularly when writing the logic to gather the 
+list of valid moves, and checking the board state for a win condition.
+
+There was an initial hurdle since there was very little prior experience with Prolog
+before this project, but the results are gratifying and a new and invaluable insight 
+into developing complex systems with several layers of internal logic was gained.
+
+Some of the code can still be better modularised and refactored, along with the
+usage of particular SICStus or ISO predicates that can simplify even more of
+the game logic, making it shorter and more comprehensive.
 
 \newpage
 \setlength\parindent{0pt}
