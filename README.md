@@ -8,11 +8,11 @@ A [Prolog][1] implementation of the game [Teeko][2].
 
 Install [LaTeX][3] and [Pandoc][4] and then run
 ```
-pandoc --filter pandoc-citeproc -s <report>.md -o <output>.pdf
+pandoc --pdf-engine=xelatex --filter pandoc-citeproc -s <report>.md -o <output>.pdf
 ```
-where: 
+where:
 `<report>` is the name of the report text file,
-`<output>` is the name of the output PDF to generate.
+`<output>` is the name of the output PDF file to generate.
 
 [1]: https://en.wikipedia.org/wiki/Prolog
 [2]: https://en.wikipedia.org/wiki/Teeko
