@@ -15,6 +15,6 @@
 :- ensure_loaded('pvp.pl').
 :- ensure_loaded('bot.pl').
 
-teeko :-
+play :-
   main_menu.
 
