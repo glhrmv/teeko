@@ -261,6 +261,22 @@ valid_moves(Player, Board, List) :-
 This predicate has been implemented in the following way:
 
 ~~~prolog
+move(B, X, Y, Letter, R) :-
+  find_line(B, X, Y, Letter, R).
+
+find_line([L|Ls], 0, Y, Z, [R|Ls]) :-
+  find_column(L,Y,Z,R).
+
+find_line([L|Ls], X, Y, Z, [L|Rs]) :-
+  X > 0 ,
+  X1 is X-1 ,
+  find_line( Ls , X1 , Y , Z , Rs ).
+
+find_column([_|Cs], 0, Z, [Z|Cs]).
+find_column([C|Cs], Y, Z, [C|Rs]) :-
+  Y > 0 ,
+  Y1 is Y-1 ,
+  find_column( Cs , Y1 , Z , Rs ).
 ~~~
 
 ## End of game detection
@@ -288,6 +304,176 @@ This predicate has been implemented in the following way:
 This predicate has been implemented in the following way:
 
 ~~~prolog
+choose_move(Player, Board, Move):-
+  get_move(Player,Board,Move,Value).
+
+choose([], []).
+choose(List, Elt) :-
+  length(List, Length),
+  random(0, Length, Index),
+  nth0(Index, List, Elt).
+
+/* Choose the Win Move */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line],
+  move(Board, Line, Col, Letter, NewBoard),
+  game_over(NewBoard, Letter),
+  Move = [Col, Line], !.
+
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line, ColP, LineP],
+  move(Board, Line, Col, e, NewBoard),
+  move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+  game_over(MoreNewBoard, Letter),
+  Move = [Col, Line, ColP, LineP], !.
+
+/* Select a move that doesn't allow the other player to win */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  Other is ((Player mod 2) + 1),  /* pick valid moves for the other player */
+  player(Other, LetterO),
+  valid_moves(Other, Board, ListOther),
+  append(_, [H | _], ListOther),
+  H = [Col, Line],
+  move(Board, Line, Col, LetterO, NewBoard),
+  game_over(NewBoard, LetterO),  /* if there is a winning move */
+  valid_moves(Player, Board, List),  /* let's block */
+  append(_, [H1 | _], List),
+  [Col, Line] = H1,
+  Move = H1, !.
+
+/* Select a move that doesn't allow the other player to win */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  Other is ((Player mod 2) + 1),  /* pick valid moves for the other player */
+  player(Other, LetterO),
+  valid_moves(Other, Board, ListOther),
+  append(_, [H | _], ListOther),
+  H = [Col, Line, ColP, LineP],
+  move(Board, Line, Col, 'e', NewBoard),
+  move(NewBoard, LineP, ColP, LetterO, MoreNewBoard),
+  game_over(MoreNewBoard, LetterO),  /* if there is a winning move */
+  valid_moves(Player, Board, List),  /* let's block */
+  append(_, [H1 | _], List),
+  H1 = [ _, _, ColP1, LineP1],  /* if there is a move that places a marker in that place */
+  ColP = ColP1,
+  LineP = LineP1,
+  Move = H1, !.
+
+/* Select the move that allow to have 3 markers in line */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line],
+  move(Board, Line, Col, Letter, NewBoard),
+  win_3(NewBoard, Letter),
+  Move = [Col, Line], !.
+
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line, ColP, LineP],
+  move(Board, Line, Col, e, NewBoard),
+  move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+  win_3(MoreNewBoard, Letter),
+  Move = [Col, Line, ColP, LineP], !.
+
+/* Select a move that doesn't allow the other player to have 
+3 marks in line in the first phase round */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  Other is ((Player mod 2) + 1),  /* pick valid moves for the other player */
+  player(Other, LetterO),
+  valid_moves(Other, Board, ListOther),
+  append(_, [H | _], ListOther),
+  H = [Col, Line],
+  move(Board, Line, Col, LetterO, NewBoard),
+  win_3(NewBoard, LetterO),  /* if there is a winning move */
+  valid_moves(Player, Board, List),  /* let's block */
+  append(_, [H1 | _], List),
+  [Col, Line] = H1,
+  Move = H1, !.
+
+/* If it is a first phase game don't allow the other player to 
+place more the 3rd marker in row */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  Other is ((Player mod 2) + 1),  /* pick valid moves for the other player */
+  player(Other, LetterO),
+  valid_moves(Other, Board, ListOther),
+  append(_, [H | _], ListOther),
+  H = [Col, Line],
+  move(Board, Line, Col, LetterO, NewBoard),
+  win_3(NewBoard, LetterO),  /* if there is a 3rd marker move */
+  valid_moves(Player, Board, List),  /* let's block */
+  append(_, [H1 | _], List),
+  [Col, Line] = H1,
+  Move = H1, !.
+
+/* Select the move that allow to have 2 markers in line */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line],
+  move(Board, Line, Col, Letter, NewBoard),
+  win_2(NewBoard, Letter),
+  Move = [Col, Line], !.
+
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  valid_moves(Player, Board, List),
+  append(_, [H | _], List),
+  H = [Col, Line, ColP, LineP],
+  move(Board, Line, Col, e, NewBoard),
+  move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
+  win_2(MoreNewBoard, Letter),
+  Move = [Col, Line, ColP, LineP], !.
+
+/* Select Random Move */
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count < 4,
+  valid_moves(Player, Board, List),
+  choose(List, [C, L|_]),
+  Move = [C,L].
+
+get_move(Player, Board, Move, V) :-
+  player(Player, Letter),
+  count_markers(Board, Letter, Count),
+  Count = 4,
+  valid_moves(Player, Board, List),
+  choose(List, [C, L, C1, L1|_]),
+  Move = [C,L, C1, L1].
 ~~~
 
 \newpage
