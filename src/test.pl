@@ -26,11 +26,11 @@ board3([[e,b,e,b,b],
 [e,e,w,e,e]]).
 
 board4([
-[b,b,b,e,b],
+[x,x,x,e,x],
 [e,e,e,e,e],
-[e,w,e,e,e],
-[e,e,e,e,w],
-[w,e,w,e,e]]).
+[e,o,e,e,e],
+[e,e,e,e,o],
+[o,e,o,e,e]]).
 
 count_elements([],0).
 count_elements([_|Tail], N) :-

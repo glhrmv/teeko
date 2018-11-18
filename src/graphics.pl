@@ -1,5 +1,7 @@
 /* Graphics */
-
+display_board(Board) :-
+	print_board(Board).
+	
 print_board(Board) :-
   nl,
   length(Board, Size),
