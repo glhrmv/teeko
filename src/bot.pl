@@ -11,6 +11,10 @@ line(2).
 line(3).
 line(4).
 
+value(Player, Board, Value) :-
+	get_move(Player, Board, _, Value).
+
+
 /* Bot vs Bot */
 bot_3(Player, Board) :-
 	Other is ((Player mod 2) + 1),
@@ -207,7 +211,8 @@ choose(List, Elt) :-
 
 
 choose_move(Player, Board, Move):-
-	get_move(Player,Board,Move,Value).
+	get_move(Player,Board,Move,_).
+	
 /* Choose the Win Move */
 get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
@@ -218,7 +223,8 @@ get_move(Player, Board, Move, V) :-
 	H = [Col, Line],
 	move(Board, Line, Col, Letter, NewBoard),
 	game_over(NewBoard, Letter), 
-	Move = [Col, Line], !.
+	Move = [Col, Line],
+	V is 7, !.
 	
 get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
@@ -230,7 +236,8 @@ get_move(Player, Board, Move, V) :-
 	move(Board, Line, Col, e, NewBoard),
 	move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
 	game_over(MoreNewBoard, Letter), 
-	Move = [Col, Line, ColP, LineP], !.
+	Move = [Col, Line, ColP, LineP], 
+	V is 7, !.
 
 /* Select a move that doesn't allow the other player to win */
 get_move(Player, Board, Move, V) :-
@@ -247,7 +254,8 @@ get_move(Player, Board, Move, V) :-
 	valid_moves(Player, Board, List), 		/* let's block */
 	append(_, [H1 | _], List), 
 	[Col, Line] = H1,
-	Move = H1, !.
+	Move = H1, !,
+	V = 6.
 	
 /* Select a move that doesn't allow the other player to win */
 get_move(Player, Board, Move, V) :-
@@ -267,7 +275,8 @@ get_move(Player, Board, Move, V) :-
 	H1 = [ _, _, ColP1, LineP1],			/* if there is a move that places a marker in that place */
 	ColP = ColP1,
 	LineP = LineP1,
-	Move = H1, !.
+	Move = H1, !,
+	V = 6.
 	
 /* Select the move that allow to have 3 markers in line */
 get_move(Player, Board, Move, V) :-
@@ -279,7 +288,8 @@ get_move(Player, Board, Move, V) :-
 	H = [Col, Line],
 	move(Board, Line, Col, Letter, NewBoard),
 	win_3(NewBoard, Letter), 
-	Move = [Col, Line], !.
+	Move = [Col, Line], !,
+	V = 5.
 	
 get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
@@ -291,7 +301,8 @@ get_move(Player, Board, Move, V) :-
 	move(Board, Line, Col, e, NewBoard),
 	move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
 	win_3(MoreNewBoard, Letter), 
-	Move = [Col, Line, ColP, LineP], !.
+	Move = [Col, Line, ColP, LineP], !,
+	V = 5.
 	
 /* Select a move that doesn't allow the other player to have 3 marks in line in the first phase round */
 get_move(Player, Board, Move, V) :-
@@ -308,7 +319,8 @@ get_move(Player, Board, Move, V) :-
 	valid_moves(Player, Board, List), 		/* let's block */
 	append(_, [H1 | _], List), 
 	[Col, Line] = H1,
-	Move = H1, !.
+	Move = H1, !,
+	V = 4.
 
 /* If it is a first phase game don't allow the other player to place more the 3rd marker in row */
 get_move(Player, Board, Move, V) :-
@@ -325,7 +337,8 @@ get_move(Player, Board, Move, V) :-
 	valid_moves(Player, Board, List), 		/* let's block */
 	append(_, [H1 | _], List), 
 	[Col, Line] = H1,
-	Move = H1, !.
+	Move = H1, !,
+	V = 3.
 	
 /* Select the move that allow to have 2 markers in line */
 get_move(Player, Board, Move, V) :-
@@ -337,7 +350,8 @@ get_move(Player, Board, Move, V) :-
 	H = [Col, Line],
 	move(Board, Line, Col, Letter, NewBoard),
 	win_2(NewBoard, Letter), 
-	Move = [Col, Line], !.
+	Move = [Col, Line], !,
+	V = 2.
 	
 get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
@@ -349,7 +363,8 @@ get_move(Player, Board, Move, V) :-
 	move(Board, Line, Col, e, NewBoard),
 	move(NewBoard, LineP, ColP, Letter, MoreNewBoard),
 	win_2(MoreNewBoard, Letter), 
-	Move = [Col, Line, ColP, LineP], !.
+	Move = [Col, Line, ColP, LineP], !,
+	V = 2.
 	
 /* Select Random Move */
 get_move(Player, Board, Move, V) :-
@@ -358,7 +373,8 @@ get_move(Player, Board, Move, V) :-
 	Count < 4,
 	valid_moves(Player, Board, List),
 	choose(List, [C, L|_]),
-	Move = [C,L].
+	Move = [C,L],
+	V = 1.
 	
 get_move(Player, Board, Move, V) :-
 	player(Player, Letter),
@@ -366,6 +382,8 @@ get_move(Player, Board, Move, V) :-
 	Count = 4,
 	valid_moves(Player, Board, List),
 	choose(List, [C, L, C1, L1|_]),
-	Move = [C,L, C1, L1].
+	Move = [C,L, C1, L1],
+	V = 1.
+	
 
 
