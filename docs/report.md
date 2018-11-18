@@ -128,14 +128,14 @@ strings onto the screen with special Unicode characters, e.g, `├` or `╗`, wi
 [`write/1`][4] predicate.
 Instead, for printing individual special symbols like these and others, the usage
 of dedicated predicates like [`put_code/1`][5] were required.
-
 This is good enough for displaying the board and the main menu with these sorts of
 special characters for a better aesthetic, but an issue arised when trying to come up
 with symbols for displaying each player's markers. Initially, the red circle symbol
 (U+1F534) was chosen for the Red player's markers, and the black circle symbol (U+2B24)
 for Black player's markers. This quickly posed a problem when trying to test the game
 under different conditions, i.e., terminal emulators, operating systems,
-colour schemes, etc.
+colour schemes, etc., as telling players apart was a very different experience depending
+on the environment.
 
 Instead of trying to find a cross-platform solution for this problem, the "Black" and "Red"
 terminology was abandonded in favour of a more traditional approach: one player would control
@@ -219,6 +219,133 @@ or it will display which player's turn it is to move.
 This predicate has been implemented in the following way:
 
 ~~~prolog
+display_board(Board) :-
+	print_board(Board).
+	
+print_board(Board) :-
+  nl,
+  length(Board, Size),
+  print_letters(Size, Size),
+  print_top_lines(Size),
+  print_squares(0, Size, Board),
+  print_bottom_lines(Size).
+
+/* Print letters on top of the board */
+print_letters(Size, Size) :-
+  Size > 0,
+  write('    '),
+  print_letter(Size, Size).
+
+print_letter(1, Size) :-
+  write(' '),
+  C is 65+Size-1,
+  put_code(C),
+  write(' '), nl.
+
+print_letter(Line, Size) :-
+  write(' '),
+  C is 65+Size-Line,
+  put_code(C),
+  write(' '),
+  Nextline is Line-1,
+  print_letter(Nextline, Size).
+
+/* Print the top line of the board */
+print_top_lines(Column) :-
+  Column > 0,
+  write('    '),
+  lt_corner,
+  print_top_line(Column).
+
+print_top_line(1) :-
+  horiz,
+  horiz,
+  rt_corner, nl.
+
+print_top_line(Column) :-
+  horiz,
+  horiz,
+  top_con,
+  Nextcolumn is Column-1,
+  print_top_line(Nextcolumn).
+
+/* Print the bottom line line of the board */
+print_bottom_lines(Column) :-
+  Column > 0,
+  write('    '),
+  lb_corner,
+  print_bottom_line(Column).
+
+print_bottom_line(1) :-
+  horiz,
+  horiz,
+  rb_corner, nl.
+
+print_bottom_line(Column) :-
+  horiz,
+  horiz,
+  bottom_con,
+  NextColumn is Column-1,
+  print_bottom_line(NextColumn).
+
+/* Print the middle of the board */
+print_squares(_, _, []).
+
+print_squares(0, Size, [Line|Board]) :-
+  print_markers(0, Size, Line),
+  print_squares(1, Size, Board).
+
+print_squares(Currentline, Size, [Line|Board]) :-
+  print_middle_lines(Size),
+  print_markers(Currentline, Size, Line),
+  Nextline is Currentline+1,
+  print_squares(Nextline, Size, Board).
+
+/* Print the horizontal lines and connectors of the board */
+print_middle_lines(Size) :-
+  Size > 0,
+  write('    '),
+  left_con,
+  print_middle_line(Size).
+
+print_middle_line(1) :-
+  horiz,
+  horiz,
+  right_con, nl.
+
+print_middle_line(Size) :-
+  horiz,
+  horiz,
+  middle,
+  Nextsize is Size-1,
+  print_middle_line(Nextsize).
+
+/* Print the markers and the vertical lines */
+print_markers(Currline, _, Line) :-
+  write('  '),
+  write(Currline),
+  write(' '),
+  print_marker(Line),
+  vert, nl.
+
+print_marker([]).
+
+print_marker([e|Line]) :-
+  vert,
+  write('  '),
+  print_marker(Line).
+
+print_marker([o|Line]) :-
+  vert,
+  black_circle,
+  write(' '),
+  print_marker(Line).
+
+print_marker([x|Line]) :-
+  vert,
+  white_circle,
+  write(' '),
+  print_marker(Line).
 ~~~
 
 ## Valid moves
@@ -256,8 +383,14 @@ valid_moves(Player, Board, List) :-
 
 ## Moving markers
 
-`move(+Move, +Board, -NewBoard)`
+The ability for the player to move their markers around the board is
+crucial to the game, so a predicate `move(+Board, +Column, +Line, +Marker, -NewBoard)`
+was created. It takes in a board state (i.e., the current state), the coordinates
+of the marker to be moved to `Column` and `Line`, the marker to move (`x` or `o`), and
+a `NewBoard` variable will be unified with a board structure if the move is possible.
 
+If a move is not possible, e.g., if the desired position is not an empty position,
+the move will not be performed and the player will have the option to try again.
 This predicate has been implemented in the following way:
 
 ~~~prolog
@@ -281,9 +414,16 @@ find_column([C|Cs], Y, Z, [C|Rs]) :-
 
 ## End of game detection
 
-`game_over(+Board, -Winner)`
+As stated in an earlier section, there are 2 ways for a player to win
+a game of Teeko. They are:
 
-This predicate has been implemented in the following way:
+- Forming a straight line of 4 markers (in a horizontal, vertical, or diagonal direction).
+- Forming a 'square' of 4 adjacent markers.
+
+In order to detect if a win condition has been met by a given player, the predicate
+`game_over(+Board, -Winner)` was created. It takes in the state of the board and will
+unify `Winner` with a winning player, if any was found. This predicate has been implemented 
+in the following way:
 
 ~~~prolog
 /* Vertical win condition */
@@ -326,22 +466,32 @@ game_over(Board, Player) :-
 
 ## Board state evaluation
 
-`value(+Board, +Player, -Value)`
-
-This predicate has been implemented in the following way:
+According to the project specifications, a predicate `value(+Board, +Player, -Value)`
+was to be created so that the state of the board could be evaluated. Since there was
+no real need found for such a predicate in the development of this project, the
+`value/3` predicate created merely serves as a *wrapper* to `get_move/4`, which is
+defined in the next section.
 
 ~~~prolog
+value(Player, Board, Value) :-
+	get_move(Player, Board, _, Value).
 ~~~
 
 ## Computer movement
 
-`choose_move(+Board, +Level, -Move)`
+There are two levels of gameplay that the computer can follow, either
+an 'easy' level (level 1), where moves are simply chosen at random, and
+a 'hard' level (level 2), whereby the computer will attempt to predict which
+moves will drive towards a winning position, or toward blocking the opponent
+from reaching a winning position. 
 
-This predicate has been implemented in the following way:
+A predicate `choose_move(+Board, +Level, -Move)` was developed, which takes in
+a board state, the level of the bot, and will choose a move depending on the 
+level of the bot. This predicate has been implemented in the following way:
 
 ~~~prolog
 choose_move(Player, Board, Move):-
-  get_move(Player,Board,Move,Value).
+  get_move(Player,Board,Move,_).
 
 choose([], []).
 choose(List, Elt) :-
