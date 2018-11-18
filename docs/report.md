@@ -286,6 +286,42 @@ find_column([C|Cs], Y, Z, [C|Rs]) :-
 This predicate has been implemented in the following way:
 
 ~~~prolog
+/* Vertical win condition */
+game_over(Board, Player) :-
+  append(_, [Column | _], Board),
+  check_column(Column, Player).
+
+/* Horizontal win condition */
+game_over(Board, Player) :-
+  append(_, [Col1, Col2, Col3, Col4 | _], Board),
+  check_rows(Col1, Col2, Col3, Col4, Player).
+
+/* Diagonal win condition type 1 (decreasing rows) */
+game_over(Board, Player) :-
+  append(_, [Col1, Col2, Col3, Col4 | _], Board),
+  Col2 = [_ | NewCol2],
+  Col3 = [_, _ | NewCol3],
+  Col4 = [_, _, _ | NewCol4],
+  check_rows(Col1, NewCol2, NewCol3, NewCol4, Player).
+
+/* Diagonal win condition type 2 (increasing rows) */
+game_over(Board, Player) :-
+  append(_, [Col1, Col2, Col3, Col4 | _], Board),
+  Col1 = [_, _, _ | NewCol1],
+  Col2 = [_, _ | NewCol2],
+  Col3 = [_ | NewCol3],
+  check_rows(NewCol1, NewCol2, NewCol3, Col4, Player).
+
+/* Square win condition */
+game_over(Board, Player) :-
+  append(_, [Col1, Col2| _], Board),
+  Col1 = [_| Col3],
+  Col2 = [_| Col4],
+  check_rows(Col1, Col2, Col3, Col4, Player).
+  
+game_over(Board, Player) :-
+  append(_, [Column | _], Board),
+  check_column(Column, Player).
 ~~~
 
 ## Board state evaluation
