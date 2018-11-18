@@ -33,7 +33,7 @@ read_position_from(Player, Board, Columm, Line) :-
 	Line is LNumber.
 	
 read_position_from(Player, Board, _, _) :-
-	write('Erro na escolha do campo. Relembre:!'), nl,
+	write('Invalid position choice. Remember: '), nl,
 	write('Columm: A to E'), nl,
 	write('Line: 0 to 4'), nl,
 	play_pvp(Player, Board).
@@ -90,7 +90,7 @@ read_position_from_b(Player, Board, Columm, Line) :-
 	Line is LNumber.
 	
 read_position_from_b(Player, Board, _, _) :-
-	write('Erro na escolha do campo. Relembre:!'), nl,
+	write('Invalid position choice. Remember: '), nl,
 	write('Columm: A to E'), nl,
 	write('Line: 0 to 4'), nl,
 	bot_1(Player, Board).
@@ -109,7 +109,7 @@ read_position_to_check_from_b(Player, Board, Columm, Line) :-
 	Value = Piece.
 
 read_position_to_check_from_b(Player, Board, _Columm, _Line) :-
-	write('That is not your marker!!'), nl,
+	write('That is not your marker!'), nl,
 	bot_1(Player, Board).
 	
 /* Input */
@@ -147,7 +147,7 @@ read_position_from_b2(Player, Board, Columm, Line) :-
 	Line is LNumber.
 	
 read_position_from_b2(Player, Board, _, _) :-
-	write('Erro na escolha do campo. Relembre:!'), nl,
+	write('Invalid position choice. Remember: '), nl,
 	write('Columm: A to E'), nl,
 	write('Line: 0 to 4'), nl,
 	bot_2(Player, Board).
@@ -166,6 +166,6 @@ read_position_to_check_from_b2(Player, Board, Columm, Line) :-
 	Value = Piece.
 
 read_position_to_check_from_b2(Player, Board, _Columm, _Line) :-
-	write('That is not your marker!!'), nl,
+	write('That is not your marker!'), nl,
 	bot_2(Player, Board).
 

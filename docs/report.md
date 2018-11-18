@@ -384,13 +384,12 @@ valid_moves(Player, Board, List) :-
 ## Moving markers
 
 The ability for the player to move their markers around the board is
-crucial to the game, so a predicate `move(+Board, +Column, +Line, +Marker, -NewBoard)`
+crucial to the game, so a predicate `move(+Board, +Column, +Line, +Position, -NewBoard)`
 was created. It takes in a board state (i.e., the current state), the coordinates
-of the marker to be moved to `Column` and `Line`, the marker to move (`x` or `o`), and
-a `NewBoard` variable will be unified with a board structure if the move is possible.
+of the position to be altered (its `Column` and `Line`), what is to placed in that
+position (either `x`, `o`, or `e`), and a `NewBoard` variable will be unified with a 
+board structure after the move is performed.
 
-If a move is not possible, e.g., if the desired position is not an empty position,
-the move will not be performed and the player will have the option to try again.
 This predicate has been implemented in the following way:
 
 ~~~prolog
@@ -660,6 +659,75 @@ get_move(Player, Board, Move, V) :-
   valid_moves(Player, Board, List),
   choose(List, [C, L, C1, L1|_]),
   Move = [C,L, C1, L1].
+~~~
+
+## Dealing with invalid inputs
+
+This project was developed with the goal of being played by anybody vaguely familiar
+with the game Teeko, so extra care was taken to make sure there is no way the user's
+input could somehow break the flow of the game.
+
+The following predicates were created to make sure that:
+
+- A player can only choose from columns `A` to `E`.
+- A player can only choose from lines `0` to `4`.
+- A player can only move one of their markers onto an empty space.
+
+~~~prolog
+read_position_to(Player, Board, Columm, Line) :-
+	write('Put marker in Columm: '), nl,
+	get_code(C), skip_line,
+	C > 64, C < 70,
+	write('Put marker in line: '), nl,
+	get_code(L), skip_line,
+	L > 47, L < 53,
+	CNumber is C - 65,
+	LNumber is L - 48,
+	read_position_to_check(Player, Board, CNumber, LNumber),
+	Columm is CNumber,
+	Line is LNumber.
+
+read_position_to(Player, Board, _, _) :-
+	write('Invalid position choice. Remember: '), nl,
+	write('Columm: A to E'), nl,
+	write('Line: 0 to 4'), nl,
+	play_pvp(Player, Board).
+	
+read_position_from(Player, Board, Columm, Line) :-
+	write('Get the Piece in Column: '), nl,
+	get_code(C), skip_line,
+	C > 64, C < 70,
+	write('Get the Piece in Line: '), nl,
+	get_code(L), skip_line,	
+	L > 47, L < 53,
+	CNumber is C - 65,
+	LNumber is L - 48,
+	read_position_to_check_from(Player, Board, CNumber, LNumber),
+	Columm is CNumber,
+	Line is LNumber.
+	
+read_position_from(Player, Board, _, _) :-
+	write('Invalid position choice. Remember: '), nl,
+	write('Columm: A to E'), nl,
+	write('Line: 0 to 4'), nl,
+	play_pvp(Player, Board).
+
+read_position_to_check(_Player, Board, Columm, Line) :-
+	check_free_space(Board, Columm, Line, Value),
+	Value = 'e'.
+
+read_position_to_check(Player, Board, _Columm, _Line) :-
+	write('There is already a marker on that position'), nl,
+	play_pvp(Player, Board).
+
+read_position_to_check_from(Player, Board, Columm, Line) :-
+	check_free_space(Board, Columm, Line, Value),
+	player(Player, Piece),
+	Value = Piece.
+
+read_position_to_check_from(Player, Board, _Columm, _Line) :-
+	write('That is not your marker!!'), nl,
+	play_pvp(Player, Board).
 ~~~
 
 \newpage

@@ -88,7 +88,7 @@ get_board(X) :-
   board(X).
 
 move_marker(X, Y, Letter,R) :-
-  board(B) ,
+  board(B),
   find_line(B, X, Y, Letter, R).
 
 find_line( [L|Ls] , 0 , Y , Z , [R|Ls] ) :-
