@@ -78,8 +78,6 @@ check_adjacent(C, L, C1, L1) :-
   CP = C1,
   LP = L1.
 
-
-
 /* Check Win Line */
 
 /* Vertical win condition */

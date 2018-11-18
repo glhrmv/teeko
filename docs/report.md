@@ -463,6 +463,19 @@ game_over(Board, Player) :-
   check_column(Column, Player).
 ~~~
 
+This predicate relies heavily on the two predicates `check_row/2` and `check_column/2`, 
+whose implementation is below.
+
+~~~prolog
+check_column([Player, Player, Player, Player | _], Player).
+check_column([_ | Under], Player) :-
+  check_column(Under, Player).
+
+check_rows([Player | _], [Player | _], [Player | _], [Player | _], Player).
+check_rows([_ | Under1], [_ | Under2], [_ | Under3], [_ | Under4], Player) :-
+  check_rows(Under1, Under2, Under3, Under4, Player).
+~~~
+
 ## Board state evaluation
 
 According to the project specifications, a predicate `value(+Board, +Player, -Value)`
@@ -483,6 +496,22 @@ an 'easy' level (level 1), where moves are simply chosen at random, and
 a 'hard' level (level 2), whereby the computer will attempt to predict which
 moves will drive towards a winning position, or toward blocking the opponent
 from reaching a winning position. 
+
+The level 2 computer player (or bot) has to be relatively intelligent, so it will follow a list of
+rules in order to find the best move to perform, from any position.
+
+In the drop phase, the bot first try to form 3 markers in a straight
+line or a triangle shape, all the while making sure the opponent is not building a winning
+position, dropping markers to block these efforts and stop an early defeat. 
+
+In the move phase, the bot will try to have 2 markers in the same line to facilitate a
+winning position. From this point, it will form a square or a straight line, depending
+on what is most feasible.
+If, at any point, the bot detects that the opponent might be close to winning (typically by
+seeing how many markers in a row the opponent has) it will move in order to try blocking 
+the opponent's efforts.
+If the bot does not have any 2 markers in a row and if the opponent is also not near
+a winning position, the bot will choose a random possible move.
 
 A predicate `choose_move(+Board, +Level, -Move)` was developed, which takes in
 a board state, the level of the bot, and will choose a move depending on the 
@@ -554,7 +583,7 @@ get_move(Player, Board, Move, V) :-
   game_over(MoreNewBoard, LetterO),  /* if there is a winning move */
   valid_moves(Player, Board, List),  /* let's block */
   append(_, [H1 | _], List),
-  H1 = [ _, _, ColP1, LineP1],  /* if there is a move that places a marker in that place */
+  H1 = [ _, _, ColP1, LineP1],
   ColP = ColP1,
   LineP = LineP1,
   Move = H1, !.
@@ -672,6 +701,10 @@ The following predicates were created to make sure that:
 - A player can only choose from columns `A` to `E`.
 - A player can only choose from lines `0` to `4`.
 - A player can only move one of their markers onto an empty space.
+- (Move phase) A player can only select their own markers.
+
+If the user's input results in any of these conditions not being met, the program
+warns them of their mishap and lets them redo the input.
 
 ~~~prolog
 read_position_to(Player, Board, Columm, Line) :-
@@ -744,7 +777,7 @@ before this project, but the results are gratifying and a new and invaluable ins
 into developing complex systems with several layers of internal logic was gained.
 
 Some of the code can still be better modularised and refactored, along with the
-usage of particular SICStus or ISO predicates that can simplify even more of
+usage of particular SICStus Prolog or ISO predicates that can simplify even more of
 the game logic, making it shorter and more comprehensive.
 
 \newpage
