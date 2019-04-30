@@ -1,6 +1,6 @@
 # teeko
 
-> University project made for FEUP, MIEIC (PLOG).
+> University project for FEUP, MIEIC (PLOG).
 
 A [Prolog][1] implementation of the game [Teeko][2].
 
